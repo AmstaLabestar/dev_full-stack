@@ -1,7 +1,12 @@
+import { hashPassword } from "@/lib/password";
 import { portfolioSeed } from "@/data/portfolio";
 import { prisma } from "@/lib/prisma";
 
 async function main() {
+  const adminEmail = process.env.ADMIN_EMAIL ?? "admin@portfolio.dev";
+  const adminPassword = process.env.ADMIN_PASSWORD ?? "ChangeMe123!";
+  const passwordHash = await hashPassword(adminPassword);
+
   const profile = await prisma.portfolioProfile.upsert({
     where: { id: "portfolio-profile" },
     update: {
@@ -22,6 +27,21 @@ async function main() {
       availability: portfolioSeed.profile.availability,
       yearsOfExperience: portfolioSeed.profile.yearsOfExperience,
       focusAreas: portfolioSeed.profile.focusAreas,
+    },
+  });
+
+  await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: {
+      name: "Hamza Admin",
+      passwordHash,
+      role: "ADMIN",
+    },
+    create: {
+      name: "Hamza Admin",
+      email: adminEmail,
+      passwordHash,
+      role: "ADMIN",
     },
   });
 
