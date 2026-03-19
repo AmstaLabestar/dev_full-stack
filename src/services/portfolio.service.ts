@@ -1,5 +1,5 @@
 import { formatFocusAreas } from "@/lib/formatters";
-import { portfolioRepository } from "@/repositories/portfolio.repository";
+import { createPortfolioRepository } from "@/repositories/portfolio.repository-factory";
 import type { PortfolioRepository } from "@/repositories/portfolio.repository";
 import type { LandingPageData } from "@/types/portfolio";
 
@@ -12,7 +12,7 @@ export class PortfolioService {
     return {
       profile: {
         ...portfolio.profile,
-        availability: `${portfolio.profile.availability} · ${formatFocusAreas(
+        availability: `${portfolio.profile.availability} � ${formatFocusAreas(
           portfolio.profile.focusAreas,
         )}`,
       },
@@ -27,4 +27,6 @@ export class PortfolioService {
   }
 }
 
-export const portfolioService = new PortfolioService(portfolioRepository);
+export const portfolioService = new PortfolioService(
+  createPortfolioRepository(),
+);

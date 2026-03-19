@@ -1,0 +1,73 @@
+import type {
+  Experience,
+  Highlight,
+  PortfolioProfile,
+  Project,
+  SocialLink,
+} from "@/generated/prisma/client";
+import { portfolioSchema } from "@/schemas/portfolio";
+import type { Portfolio } from "@/types/portfolio";
+
+type PortfolioRecord = PortfolioProfile & {
+  socialLinks: SocialLink[];
+  highlights: Highlight[];
+};
+
+export type PortfolioSnapshot = {
+  profile: PortfolioRecord;
+  projects: Project[];
+  experiences: Experience[];
+};
+
+export function mapPortfolioSnapshotToDomain(
+  snapshot: PortfolioSnapshot,
+): Portfolio {
+  return portfolioSchema.parse({
+    profile: {
+      name: snapshot.profile.name,
+      role: snapshot.profile.role,
+      location: snapshot.profile.location,
+      intro: snapshot.profile.intro,
+      availability: snapshot.profile.availability,
+      yearsOfExperience: snapshot.profile.yearsOfExperience,
+      focusAreas: snapshot.profile.focusAreas,
+    },
+    socialLinks: snapshot.profile.socialLinks
+      .sort((left, right) => left.sortOrder - right.sortOrder)
+      .map((link) => ({
+        label: link.label,
+        href: link.href,
+      })),
+    highlights: snapshot.profile.highlights
+      .sort((left, right) => left.sortOrder - right.sortOrder)
+      .map((highlight) => ({
+        label: highlight.label,
+        value: highlight.value,
+        detail: highlight.detail,
+      })),
+    projects: snapshot.projects
+      .sort((left, right) => left.sortOrder - right.sortOrder)
+      .map((project) => ({
+        slug: project.slug,
+        title: project.title,
+        summary: project.summary,
+        category: project.category,
+        year: project.year,
+        featured: project.featured,
+        tags: project.tags,
+        links: {
+          github: project.githubUrl,
+          demo: project.demoUrl,
+          video: project.videoUrl ?? undefined,
+        },
+      })),
+    experiences: snapshot.experiences
+      .sort((left, right) => left.sortOrder - right.sortOrder)
+      .map((experience) => ({
+        company: experience.company,
+        role: experience.role,
+        period: experience.period,
+        summary: experience.summary,
+      })),
+  });
+}

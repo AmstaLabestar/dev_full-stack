@@ -11,5 +11,3 @@ export class InMemoryPortfolioRepository implements PortfolioRepository {
     return portfolioSchema.parse(portfolioSeed);
   }
 }
-
-export const portfolioRepository = new InMemoryPortfolioRepository();

@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ProjectCategory {
+  web
+  mobile
+  ai
+}
+
+enum AssetType {
+  cv
+  image
+  video
+}
+
+model PortfolioProfile {
+  id                String       @id @default(cuid())
+  name              String
+  role              String
+  location          String
+  intro             String       @db.Text
+  availability      String
+  yearsOfExperience Int
+  focusAreas        String[]
+  socialLinks       SocialLink[]
+  highlights        Highlight[]
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+}
+
+model SocialLink {
+  id         String           @id @default(cuid())
+  label      String
+  href       String
+  sortOrder  Int              @default(0)
+  profileId  String
+  profile    PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([profileId, sortOrder])
+}
+
+model Highlight {
+  id         String           @id @default(cuid())
+  label      String
+  value      String
+  detail     String           @db.Text
+  sortOrder  Int              @default(0)
+  profileId  String
+  profile    PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  @@index([profileId, sortOrder])
+}
+
+model Project {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  title       String
+  summary     String          @db.Text
+  category    ProjectCategory
+  year        Int
+  featured    Boolean         @default(false)
+  tags        String[]
+  githubUrl   String
+  demoUrl     String
+  videoUrl    String?
+  sortOrder   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Experience {
+  id         String   @id @default(cuid())
+  company    String
+  role       String
+  period     String
+  summary    String   @db.Text
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Asset {
+  id         String    @id @default(cuid())
+  type       AssetType
+  title      String
+  fileName   String
+  storageKey String
+  mimeType   String
+  size       Int
+  url        String
+  isCurrent  Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([type, isCurrent])
+}
