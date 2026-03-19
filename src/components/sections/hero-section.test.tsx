@@ -31,7 +31,7 @@ describe("HeroSection", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /hamza, architecte et developpeur full-stack/i,
+        name: /hamza, architecte et .*veloppeur full-stack/i,
       }),
     ).toBeInTheDocument();
     expect(

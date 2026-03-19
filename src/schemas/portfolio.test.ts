@@ -35,6 +35,7 @@ const validPayload = {
       year: 2024,
       featured: true,
       tags: ["Next.js"],
+      metrics: ["Performance", "UX premium"],
       links: {
         github: "https://github.com/hamza/app-web",
         demo: "https://demo.example.com/app-web",
@@ -49,6 +50,7 @@ const validPayload = {
       year: 2025,
       featured: false,
       tags: ["React Native"],
+      metrics: ["Offline first", "Productivite terrain"],
       links: {
         github: "https://github.com/hamza/app-mobile",
         demo: "https://demo.example.com/app-mobile",
@@ -63,6 +65,7 @@ const validPayload = {
       year: 2026,
       featured: true,
       tags: ["LLM"],
+      metrics: ["RAG", "Supervision"],
       links: {
         github: "https://github.com/hamza/app-ai",
         demo: "https://demo.example.com/app-ai",
@@ -76,6 +79,7 @@ const validPayload = {
       period: "2024 - Aujourd'hui",
       summary:
         "Pilotage technique et alignement des pratiques entre produit, design et engineering.",
+      achievements: ["Pilotage technique", "Standards partages"],
     },
     {
       company: "Scale",
@@ -83,6 +87,40 @@ const validPayload = {
       period: "2020 - 2024",
       summary:
         "Construction de plateformes critiques avec forte exigence de qualite et de fiabilite.",
+      achievements: ["Plateformes critiques", "Performance"],
+    },
+  ],
+  skillGroups: [
+    { title: "Frontend", items: ["Next.js", "TypeScript", "React"] },
+    { title: "Backend", items: ["Node.js", "Prisma", "PostgreSQL"] },
+    { title: "Platform", items: ["CI/CD", "Cloud", "Testing"] },
+  ],
+  services: [
+    {
+      title: "Architecture",
+      description:
+        "Structuration de produits maintenables et evolutifs pour la production.",
+      outcomes: ["Clarte", "Scalabilite"],
+    },
+    {
+      title: "Delivery",
+      description:
+        "Execution full-stack orientee qualite, visibilite et cadence de livraison.",
+      outcomes: ["Vitesse", "Qualite"],
+    },
+    {
+      title: "Optimisation",
+      description:
+        "Amelioration continue des performances, de l'UX et de la fiabilite.",
+      outcomes: ["Performance", "Fiabilite"],
+    },
+  ],
+  contactSteps: [
+    { title: "Cadrage", detail: "Comprendre le contexte et les contraintes." },
+    { title: "Plan", detail: "Proposer un plan d'execution pragmatique." },
+    {
+      title: "Lancement",
+      detail: "Demarrer avec un cadre de delivery propre.",
     },
   ],
 };

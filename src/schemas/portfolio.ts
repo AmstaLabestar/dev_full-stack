@@ -14,6 +14,7 @@ const projectSchema = z.object({
   year: z.number().int().min(2020),
   featured: z.boolean(),
   tags: z.array(z.string().min(1)).min(1),
+  metrics: z.array(z.string().min(2)).min(2),
   links: projectLinkSchema,
 });
 
@@ -22,6 +23,7 @@ const experienceSchema = z.object({
   role: z.string().min(2),
   period: z.string().min(4),
   summary: z.string().min(20),
+  achievements: z.array(z.string().min(6)).min(2),
 });
 
 const socialLinkSchema = z.object({
@@ -32,6 +34,22 @@ const socialLinkSchema = z.object({
 const highlightSchema = z.object({
   label: z.string().min(2),
   value: z.string().min(1),
+  detail: z.string().min(8),
+});
+
+const skillGroupSchema = z.object({
+  title: z.string().min(2),
+  items: z.array(z.string().min(2)).min(3),
+});
+
+const serviceSchema = z.object({
+  title: z.string().min(2),
+  description: z.string().min(20),
+  outcomes: z.array(z.string().min(4)).min(2),
+});
+
+const contactStepSchema = z.object({
+  title: z.string().min(2),
   detail: z.string().min(8),
 });
 
@@ -49,4 +67,7 @@ export const portfolioSchema = z.object({
   highlights: z.array(highlightSchema).min(3),
   projects: z.array(projectSchema).min(3),
   experiences: z.array(experienceSchema).min(2),
+  skillGroups: z.array(skillGroupSchema).min(3),
+  services: z.array(serviceSchema).min(3),
+  contactSteps: z.array(contactStepSchema).min(3),
 });

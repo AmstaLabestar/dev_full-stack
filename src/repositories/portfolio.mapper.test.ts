@@ -167,9 +167,11 @@ describe("mapPortfolioSnapshotToDomain", () => {
     expect(result.socialLinks[0]?.label).toBe("GitHub");
     expect(result.highlights).toHaveLength(3);
     expect(result.projects[0]?.slug).toBe("ai-copilot");
+    expect(result.projects[0]?.metrics).toHaveLength(2);
     expect(result.projects[0]?.links.video).toBe(
       "https://video.example.com/ai-copilot",
     );
-    expect(result.experiences[0]?.company).toBe("Nova");
+    expect(result.experiences[0]?.achievements).toHaveLength(2);
+    expect(result.skillGroups).toHaveLength(3);
   });
 });

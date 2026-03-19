@@ -1,13 +1,33 @@
+import { Metadata } from "next";
+import { ContactProcessSection } from "@/components/sections/contact-process-section";
 import { ExperiencePreviewSection } from "@/components/sections/experience-preview-section";
 import { FeaturedProjectsSection } from "@/components/sections/featured-projects-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProfileHighlights } from "@/components/sections/profile-highlights";
+import { ServicesSection } from "@/components/sections/services-section";
+import { SkillsSection } from "@/components/sections/skills-section";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { cn } from "@/lib/utils";
 import { portfolioService } from "@/services/portfolio.service";
+
+export const metadata: Metadata = {
+  title: "Portfolio Full-Stack Senior",
+  description:
+    "Portfolio d'un d�veloppeur full-stack senior sp�cialis� en architecture logicielle, produits SaaS, plateformes IA et delivery de niveau production.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Hamza | Portfolio Full-Stack Senior",
+    description:
+      "Architecture logicielle, delivery full-stack, plateformes SaaS et IA de niveau production.",
+    type: "website",
+  },
+};
 
 export default async function Home() {
   const landingPageData = await portfolioService.getLandingPageData();
@@ -24,33 +44,45 @@ export default async function Home() {
         </Container>
       </section>
       <FeaturedProjectsSection projects={landingPageData.featuredProjects} />
-      <ExperiencePreviewSection
-        experiences={landingPageData.experiencePreview}
-      />
+      <ServicesSection services={landingPageData.services} />
+      <SkillsSection skillGroups={landingPageData.skillGroups} />
+      <ExperiencePreviewSection experiences={landingPageData.experiences} />
+      <ContactProcessSection contactSteps={landingPageData.contactSteps} />
       <section id="contact" className="pt-8 pb-24">
         <Container>
-          <Card className="border-primary/20 from-primary/12 bg-gradient-to-br via-cyan-400/8 to-transparent">
-            <CardContent className="p-8 sm:p-10">
-              <SectionHeading
-                eyebrow="Contact"
-                title="Une base UI premium, prete pour les prochaines couches produit."
-                description="L'etape suivante integrera les composants de design system aux workflows back-office et aux futures interfaces admin."
-                align="center"
-                className="mx-auto max-w-3xl"
-              />
-              <div className="mt-8 flex justify-center">
-                <a
-                  href="mailto:contact@example.com"
-                  className={cn(
-                    buttonVariants({ variant: "secondary", size: "lg" }),
-                    "h-12 rounded-full px-6",
-                  )}
-                >
-                  Planifier un premier echange
-                </a>
-              </div>
-            </CardContent>
-          </Card>
+          <Reveal>
+            <Card className="border-primary/20 from-primary/12 bg-gradient-to-br via-cyan-400/8 to-transparent">
+              <CardContent className="p-8 sm:p-10">
+                <SectionHeading
+                  eyebrow="Contact"
+                  title="Un partenaire technique pour faire avancer un produit sans diluer la qualite."
+                  description="Je travaille avec des equipes qui ont besoin d'une execution nette, d'une architecture lisible et d'un niveau de finition compatible production."
+                  align="center"
+                  className="mx-auto max-w-3xl"
+                />
+                <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                  <a
+                    href="mailto:contact@example.com"
+                    className={cn(
+                      buttonVariants({ variant: "secondary", size: "lg" }),
+                      "h-12 rounded-full px-6",
+                    )}
+                  >
+                    Planifier un premier echange
+                  </a>
+                  <a
+                    href="#projects"
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "lg" }),
+                      "h-12 rounded-full px-6",
+                    )}
+                  >
+                    Revoir les cas d usage
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          </Reveal>
         </Container>
       </section>
     </main>

@@ -47,6 +47,7 @@ describe("PortfolioService", () => {
             year: 2022,
             featured: true,
             tags: ["Migration"],
+            metrics: ["Stabilite", "Migration"],
             links: {
               github: "https://github.com/hamza/legacy",
               demo: "https://demo.example.com/legacy",
@@ -61,6 +62,7 @@ describe("PortfolioService", () => {
             year: 2024,
             featured: true,
             tags: ["Offline"],
+            metrics: ["Offline", "Terrain"],
             links: {
               github: "https://github.com/hamza/mobile",
               demo: "https://demo.example.com/mobile",
@@ -75,6 +77,7 @@ describe("PortfolioService", () => {
             year: 2026,
             featured: true,
             tags: ["AI"],
+            metrics: ["RAG", "Support"],
             links: {
               github: "https://github.com/hamza/copilot",
               demo: "https://demo.example.com/copilot",
@@ -89,6 +92,7 @@ describe("PortfolioService", () => {
             year: 2025,
             featured: false,
             tags: ["Back-office"],
+            metrics: ["Ops", "KPIs"],
             links: {
               github: "https://github.com/hamza/internal",
               demo: "https://demo.example.com/internal",
@@ -102,6 +106,7 @@ describe("PortfolioService", () => {
             period: "2023 - Aujourd'hui",
             summary:
               "Pilotage de la roadmap technique et coordination delivery.",
+            achievements: ["Roadmap technique", "Delivery multi-equipes"],
           },
           {
             company: "Scale",
@@ -109,13 +114,53 @@ describe("PortfolioService", () => {
             period: "2020 - 2023",
             summary:
               "Construction de plateformes critiques et optimisation du cycle de delivery.",
+            achievements: ["Plateformes critiques", "Optimisation delivery"],
+          },
+        ],
+        skillGroups: [
+          {
+            title: "Frontend",
+            items: ["Next.js", "TypeScript", "React"],
           },
           {
-            company: "Studio",
-            role: "Engineer",
-            period: "2018 - 2020",
-            summary:
-              "Implementation de produits clients et maintenance applicative.",
+            title: "Backend",
+            items: ["Node.js", "Prisma", "PostgreSQL"],
+          },
+          {
+            title: "Platform",
+            items: ["CI/CD", "Testing", "Cloud"],
+          },
+        ],
+        services: [
+          {
+            title: "Architecture",
+            description: "Structuration de produits maintenables.",
+            outcomes: ["Clarte", "Scalabilite"],
+          },
+          {
+            title: "Delivery",
+            description: "Execution full-stack orientee production.",
+            outcomes: ["Vitesse", "Qualite"],
+          },
+          {
+            title: "Optimisation",
+            description:
+              "Amelioration continue de l'experience et des performances.",
+            outcomes: ["Performance", "Fiabilite"],
+          },
+        ],
+        contactSteps: [
+          {
+            title: "Cadrage",
+            detail: "Comprendre le contexte du projet.",
+          },
+          {
+            title: "Plan",
+            detail: "Proposer un plan d'execution clair.",
+          },
+          {
+            title: "Lancement",
+            detail: "Demarrer la livraison de maniere incremental.",
           },
         ],
       }),
@@ -129,7 +174,10 @@ describe("PortfolioService", () => {
       "mobile",
       "legacy",
     ]);
-    expect(result.experiencePreview).toHaveLength(2);
+    expect(result.experiences).toHaveLength(2);
+    expect(result.skillGroups).toHaveLength(3);
+    expect(result.services).toHaveLength(3);
+    expect(result.contactSteps).toHaveLength(3);
     expect(result.profile.availability).toContain("Architecture");
     expect(result.profile.availability).toContain("Product");
     expect(result.profile.availability).toContain("Delivery");

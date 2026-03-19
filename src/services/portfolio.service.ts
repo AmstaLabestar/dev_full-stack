@@ -22,7 +22,10 @@ export class PortfolioService {
         .filter((project) => project.featured)
         .sort((left, right) => right.year - left.year)
         .slice(0, 3),
-      experiencePreview: portfolio.experiences.slice(0, 2),
+      experiences: portfolio.experiences,
+      skillGroups: portfolio.skillGroups,
+      services: portfolio.services,
+      contactSteps: portfolio.contactSteps,
     };
   }
 }

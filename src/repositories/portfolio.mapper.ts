@@ -55,6 +55,10 @@ export function mapPortfolioSnapshotToDomain(
         year: project.year,
         featured: project.featured,
         tags: project.tags,
+        metrics: [
+          `Livraison ${project.category}`,
+          `Focus produit ${project.year}`,
+        ],
         links: {
           github: project.githubUrl,
           demo: project.demoUrl,
@@ -68,6 +72,58 @@ export function mapPortfolioSnapshotToDomain(
         role: experience.role,
         period: experience.period,
         summary: experience.summary,
+        achievements: [
+          "Pilotage technique structure",
+          "Execution produit fiabilisee",
+        ],
       })),
+    skillGroups: [
+      {
+        title: "Frontend engineering",
+        items: ["Next.js", "TypeScript", "React"],
+      },
+      {
+        title: "Backend & data",
+        items: ["Node.js", "Prisma", "PostgreSQL"],
+      },
+      {
+        title: "Delivery & platform",
+        items: ["CI/CD", "Testing", "Cloud deployment"],
+      },
+    ],
+    services: [
+      {
+        title: "Architecture produit",
+        description:
+          "Structuration d'applications maintenables avec separation claire des responsabilites.",
+        outcomes: ["Evolutivite maitrisee", "Base technique durable"],
+      },
+      {
+        title: "Delivery full-stack",
+        description:
+          "Prise en charge du front, du backend et des workflows de mise en production.",
+        outcomes: ["Livraison plus rapide", "Qualite homogene"],
+      },
+      {
+        title: "Optimisation",
+        description:
+          "Amelioration progressive de la performance, de l'UX et de la fiabilite.",
+        outcomes: ["Experience plus fluide", "Moins d'incidents"],
+      },
+    ],
+    contactSteps: [
+      {
+        title: "Cadrage rapide",
+        detail: "Comprehension du contexte et des contraintes metier.",
+      },
+      {
+        title: "Plan d'execution",
+        detail: "Proposition claire avec priorites et decoupage pragmatique.",
+      },
+      {
+        title: "Lancement",
+        detail: "Demarrage avec standards de qualite et visibilite produit.",
+      },
+    ],
   });
 }

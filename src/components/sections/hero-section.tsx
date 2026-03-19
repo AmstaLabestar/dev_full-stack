@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
+import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 import type { LandingPageData } from "@/types/portfolio";
 
@@ -17,7 +18,7 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(125,211,252,0.12),transparent_32%),radial-gradient(circle_at_bottom_right,rgba(45,212,191,0.08),transparent_24%)]" />
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] lg:items-end">
-          <div className="space-y-8">
+          <Reveal className="space-y-8">
             <div className="space-y-4">
               <Badge>{profile.location}</Badge>
               <div className="space-y-5">
@@ -25,7 +26,7 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
                   {profile.role}
                 </p>
                 <h1 className="font-display max-w-4xl text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-                  {profile.name}, architecte et developpeur full-stack pour
+                  {profile.name}, architecte et d�veloppeur full-stack pour
                   produits web exigeants.
                 </h1>
                 <p className="max-w-2xl text-lg leading-8 text-slate-300">
@@ -54,30 +55,32 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
                 Demarrer une collaboration
               </a>
             </div>
-          </div>
-          <Card className="bg-white/6">
-            <CardContent className="p-8">
-              <p className="text-sm tracking-[0.3em] text-slate-400 uppercase">
-                Positionnement
-              </p>
-              <p className="mt-4 text-base leading-7 text-slate-200">
-                {profile.availability}
-              </p>
-              <ul className="mt-8 space-y-3">
-                {socialLinks.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
-                    >
-                      {link.label}
-                      <MoveUpRight className="size-4" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <Card className="bg-white/6">
+              <CardContent className="p-8">
+                <p className="text-sm tracking-[0.3em] text-slate-400 uppercase">
+                  Positionnement
+                </p>
+                <p className="mt-4 text-base leading-7 text-slate-200">
+                  {profile.availability}
+                </p>
+                <ul className="mt-8 space-y-3">
+                  {socialLinks.map((link) => (
+                    <li key={link.label}>
+                      <a
+                        href={link.href}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-cyan-200 transition hover:text-cyan-100"
+                      >
+                        {link.label}
+                        <MoveUpRight className="size-4" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          </Reveal>
         </div>
       </Container>
     </section>

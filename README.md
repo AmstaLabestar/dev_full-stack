@@ -1,6 +1,6 @@
 # HamzaDev Portfolio
 
-Socle du portfolio full-stack avec Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Prisma, Auth.js, ESLint, Prettier et architecture modulaire.
+Portfolio full-stack de niveau production construit avec Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, Prisma, PostgreSQL, Auth.js, Zod, React Hook Form, TanStack Query, Framer Motion, Vitest et Playwright.
 
 ## Prerequis
 
@@ -14,6 +14,7 @@ Socle du portfolio full-stack avec Next.js App Router, TypeScript, Tailwind CSS,
 npm run dev
 npm run lint
 npm run typecheck
+npm run format
 npm run format:check
 npm run test:run
 npm run build
@@ -36,15 +37,31 @@ npm run prisma:studio
 - definir les tokens visuels, typographies et primitives UI
 - integrer Prisma et modeliser la base PostgreSQL du portfolio
 - securiser l'acces admin avec Auth.js et Prisma Adapter
+- construire un front public premium avec animations, sections editoriales et CTA de conversion
+- enrichir le SEO de base avec metadata Next.js et contenu structure pour la landing page
+
+## Front public actuel
+
+- hero premium avec CTA et positionnement clair
+- highlights de profil
+- projets featured avec tags, liens et indicateurs
+- services proposes
+- competences groupees
+- experiences avec accomplissements
+- processus de contact
+- animations de reveal avec Framer Motion
+- metadata de page et layout optimisees pour le referencement de base
 
 ## Structure actuelle
 
 - `prisma/schema.prisma` : modele relationnel du portfolio et des comptes admin
 - `prisma/seed.ts` : seed initial de la base et de l'utilisateur admin
-- `src/app` : point d'entree App Router et pages admin protegees
+- `src/app` : App Router, page publique, pages admin et metadata
 - `src/auth.ts` : configuration Auth.js
-- `src/components` : composants UI, sections et formulaire d'authentification
-- `src/data` : seed temporaire et fallback local
+- `src/components/auth` : formulaire d'authentification admin
+- `src/components/sections` : sections du front public et preview experience
+- `src/components/ui` : design system partage, primitives et animations reveal
+- `src/data` : seed temporaire et fallback local enrichi
 - `src/hooks` : hooks React dedies a la presentation
 - `src/lib` : utilitaires transverses, autorisation, hashage et client Prisma
 - `src/repositories` : acces aux donnees et mappers Prisma
@@ -59,7 +76,7 @@ npm run prisma:studio
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 6 :
+Executer les commandes suivantes avant de passer a l'etape 7 :
 
 ```bash
 npm run prisma:generate
