@@ -1,4 +1,5 @@
 import { MoveUpRight } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
@@ -18,8 +19,8 @@ export function FeaturedProjectsSection({
       <Container>
         <SectionHeading
           eyebrow="Projets choisis"
-          title="Produits web, mobile et IA pens�s pour la production."
-          description="Chaque projet pr�sent� ici illustre une logique d'ex�cution compl�te : architecture, exp�rience utilisateur, performance et delivery."
+          title="Produits web, mobile et IA penses pour la production."
+          description="Chaque projet presente ici illustre une logique d execution complete : architecture, experience utilisateur, performance et delivery."
           className="mb-10"
         />
         <div className="grid gap-6 lg:grid-cols-3">

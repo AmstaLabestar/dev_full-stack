@@ -1,4 +1,6 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import Script from "next/script";
+
 import { ContactProcessSection } from "@/components/sections/contact-process-section";
 import { ExperiencePreviewSection } from "@/components/sections/experience-preview-section";
 import { FeaturedProjectsSection } from "@/components/sections/featured-projects-section";
@@ -11,80 +13,101 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { siteConfig } from "@/lib/site-config";
+import { buildPersonJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { portfolioService } from "@/services/portfolio.service";
+
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Portfolio Full-Stack Senior",
   description:
-    "Portfolio d'un d�veloppeur full-stack senior sp�cialis� en architecture logicielle, produits SaaS, plateformes IA et delivery de niveau production.",
+    "Portfolio d un developpeur full-stack senior specialise en architecture logicielle, produits SaaS, plateformes IA et delivery de niveau production.",
   alternates: {
-    canonical: "/",
+    canonical: siteConfig.url,
   },
   openGraph: {
     title: "Hamza | Portfolio Full-Stack Senior",
     description:
       "Architecture logicielle, delivery full-stack, plateformes SaaS et IA de niveau production.",
+    url: siteConfig.url,
     type: "website",
+  },
+  twitter: {
+    title: "Hamza | Portfolio Full-Stack Senior",
+    description:
+      "Architecture logicielle, delivery full-stack, plateformes SaaS et IA de niveau production.",
   },
 };
 
 export default async function Home() {
   const landingPageData = await portfolioService.getLandingPageData();
+  const structuredData = [buildPersonJsonLd(), buildWebsiteJsonLd()];
 
   return (
-    <main className="min-h-screen bg-transparent text-slate-50">
-      <HeroSection
-        profile={landingPageData.profile}
-        socialLinks={landingPageData.socialLinks}
+    <>
+      <Script
+        id="portfolio-structured-data"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
       />
-      <section className="pb-8">
-        <Container>
-          <ProfileHighlights highlights={landingPageData.highlights} />
-        </Container>
-      </section>
-      <FeaturedProjectsSection projects={landingPageData.featuredProjects} />
-      <ServicesSection services={landingPageData.services} />
-      <SkillsSection skillGroups={landingPageData.skillGroups} />
-      <ExperiencePreviewSection experiences={landingPageData.experiences} />
-      <ContactProcessSection contactSteps={landingPageData.contactSteps} />
-      <section id="contact" className="pt-8 pb-24">
-        <Container>
-          <Reveal>
-            <Card className="border-primary/20 from-primary/12 bg-gradient-to-br via-cyan-400/8 to-transparent">
-              <CardContent className="p-8 sm:p-10">
-                <SectionHeading
-                  eyebrow="Contact"
-                  title="Un partenaire technique pour faire avancer un produit sans diluer la qualite."
-                  description="Je travaille avec des equipes qui ont besoin d'une execution nette, d'une architecture lisible et d'un niveau de finition compatible production."
-                  align="center"
-                  className="mx-auto max-w-3xl"
-                />
-                <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                  <a
-                    href="mailto:contact@example.com"
-                    className={cn(
-                      buttonVariants({ variant: "secondary", size: "lg" }),
-                      "h-12 rounded-full px-6",
-                    )}
-                  >
-                    Planifier un premier echange
-                  </a>
-                  <a
-                    href="#projects"
-                    className={cn(
-                      buttonVariants({ variant: "outline", size: "lg" }),
-                      "h-12 rounded-full px-6",
-                    )}
-                  >
-                    Revoir les cas d usage
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-          </Reveal>
-        </Container>
-      </section>
-    </main>
+      <main className="min-h-screen bg-transparent text-slate-50">
+        <HeroSection
+          profile={landingPageData.profile}
+          socialLinks={landingPageData.socialLinks}
+        />
+        <section className="pb-8">
+          <Container>
+            <ProfileHighlights highlights={landingPageData.highlights} />
+          </Container>
+        </section>
+        <FeaturedProjectsSection projects={landingPageData.featuredProjects} />
+        <ServicesSection services={landingPageData.services} />
+        <SkillsSection skillGroups={landingPageData.skillGroups} />
+        <ExperiencePreviewSection experiences={landingPageData.experiences} />
+        <ContactProcessSection contactSteps={landingPageData.contactSteps} />
+        <section id="contact" className="pt-8 pb-24">
+          <Container>
+            <Reveal>
+              <Card className="border-primary/20 from-primary/12 bg-gradient-to-br via-cyan-400/8 to-transparent">
+                <CardContent className="p-8 sm:p-10">
+                  <SectionHeading
+                    eyebrow="Contact"
+                    title="Un partenaire technique pour faire avancer un produit sans diluer la qualite."
+                    description="Je travaille avec des equipes qui ont besoin d une execution nette, d une architecture lisible et d un niveau de finition compatible production."
+                    align="center"
+                    className="mx-auto max-w-3xl"
+                  />
+                  <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                    <a
+                      href={`mailto:${siteConfig.email}`}
+                      className={cn(
+                        buttonVariants({ variant: "secondary", size: "lg" }),
+                        "h-12 rounded-full px-6",
+                      )}
+                    >
+                      Planifier un premier echange
+                    </a>
+                    <a
+                      href="#projects"
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "lg" }),
+                        "h-12 rounded-full px-6",
+                      )}
+                    >
+                      Revoir les cas d usage
+                    </a>
+                  </div>
+                </CardContent>
+              </Card>
+            </Reveal>
+          </Container>
+        </section>
+      </main>
+    </>
   );
 }

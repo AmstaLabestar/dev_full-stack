@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 import { formatFocusAreas } from "@/lib/formatters";
 import { createPortfolioRepository } from "@/repositories/portfolio.repository-factory";
 import type { PortfolioRepository } from "@/repositories/portfolio.repository";
@@ -30,6 +32,17 @@ export class PortfolioService {
   }
 }
 
-export const portfolioService = new PortfolioService(
+const portfolioServiceInstance = new PortfolioService(
   createPortfolioRepository(),
 );
+
+export const getCachedLandingPageData = unstable_cache(
+  async () => portfolioServiceInstance.getLandingPageData(),
+  ["landing-page-data"],
+  {
+    revalidate: 3600,
+    tags: ["landing-page"],
+  },
+);
+
+export const portfolioService = portfolioServiceInstance;

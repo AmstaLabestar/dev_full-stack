@@ -38,9 +38,9 @@ npm run prisma:studio
 - integrer Prisma et modeliser la base PostgreSQL du portfolio
 - securiser l'acces admin avec Auth.js et Prisma Adapter
 - construire un front public premium avec animations, sections editoriales et CTA de conversion
-- enrichir le SEO de base avec metadata Next.js et contenu structure pour la landing page
 - livrer un back-office admin avec dashboard, CRUD projets et experiences
 - brancher l upload de fichiers pour le CV, les images et les videos projet
+- renforcer le SEO et la performance avec metadata avancees, JSON-LD, sitemap, robots, manifest et ISR
 
 ## Front public actuel
 
@@ -52,7 +52,9 @@ npm run prisma:studio
 - experiences avec accomplissements
 - processus de contact
 - animations de reveal avec Framer Motion
-- metadata de page et layout optimisees pour le referencement de base
+- metadata avancees, Open Graph et Twitter Cards
+- JSON-LD Person et WebSite
+- page d accueil servie en ISR avec revalidation 1h
 
 ## Back-office actuel
 
@@ -64,6 +66,16 @@ npm run prisma:studio
 - upload local de CV PDF avec activation automatique de la version courante
 - upload image et video pour les projets avec stockage dans `public/uploads`
 - historique des assets CV en base Prisma
+
+## SEO et perf
+
+- `src/app/robots.ts` : robots.txt genere
+- `src/app/sitemap.ts` : sitemap.xml genere
+- `src/app/manifest.ts` : web manifest
+- `src/app/opengraph-image.tsx` et `src/app/twitter-image.tsx` : images sociales generees
+- `src/lib/seo.ts` : helpers JSON-LD testes
+- `src/services/portfolio.service.ts` : cache ISR pour la landing
+- `next.config.ts` : compression, `poweredByHeader` desactive, `optimizePackageImports` pour `lucide-react`
 
 ## Stockage fichiers
 
@@ -77,7 +89,7 @@ npm run prisma:studio
 
 - `prisma/schema.prisma` : modele relationnel du portfolio, des comptes admin et des assets fichiers
 - `prisma/seed.ts` : seed initial de la base et de l'utilisateur admin
-- `src/app` : App Router, page publique, routes admin et actions serveur
+- `src/app` : App Router, page publique, routes admin, routes SEO et actions serveur
 - `src/auth.ts` : configuration Auth.js
 - `src/components/admin` : shell admin, navigation, formulaires RHF, uploaders et actions de suppression
 - `src/components/auth` : formulaire d'authentification admin
@@ -85,10 +97,10 @@ npm run prisma:studio
 - `src/components/ui` : design system partage, primitives et animations reveal
 - `src/data` : seed temporaire et fallback local enrichi
 - `src/hooks` : hooks React dedies a la presentation
-- `src/lib` : utilitaires transverses, autorisation, hashage, stockage fichier et client Prisma
+- `src/lib` : utilitaires transverses, autorisation, hashage, stockage fichier, config de site et SEO helpers
 - `src/repositories` : acces aux donnees Prisma, portfolio et admin
 - `src/schemas` : contrats metier Zod, publics, admin et upload
-- `src/services` : orchestration applicative
+- `src/services` : orchestration applicative et cache de la landing
 - `src/test` : setup de tests
 - `src/types` : types partages et augmentation NextAuth
 - `middleware.ts` : protection des routes `/admin/*`
@@ -98,7 +110,7 @@ npm run prisma:studio
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 9 :
+Executer les commandes suivantes avant de passer a l'etape 10 :
 
 ```bash
 npm run prisma:generate
