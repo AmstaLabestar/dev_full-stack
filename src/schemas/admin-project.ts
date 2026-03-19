@@ -23,6 +23,7 @@ export const projectFormSchema = z.object({
   year: z.coerce.number().int().min(2000).max(2100),
   featured: z.boolean().default(false),
   tags: z.string().trim().min(2).max(200),
+  imageUrl: optionalUrlSchema,
   summary: z.string().trim().min(20).max(1200),
   githubUrl: z.url(),
   demoUrl: z.url(),

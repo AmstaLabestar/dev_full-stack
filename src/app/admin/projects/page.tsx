@@ -1,5 +1,6 @@
 import { deleteProjectAction } from "@/app/admin/projects/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { ProjectAssetUploader } from "@/components/admin/project-asset-uploader";
 import { ProjectFormCard } from "@/components/admin/project-form-card";
 import { RecordDeleteButton } from "@/components/admin/record-delete-button";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +15,7 @@ export default async function AdminProjectsPage() {
   return (
     <AdminShell
       title="Gestion des projets"
-      description="Administre les projets visibles sur le portfolio public, leurs liens et leur priorite d'affichage."
+      description="Administre les projets visibles sur le portfolio public, leurs liens et leurs medias uploades."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -49,6 +50,13 @@ export default async function AdminProjectsPage() {
                     onDelete={() => deleteProjectAction(project.id)}
                   />
                 </div>
+
+                <ProjectAssetUploader
+                  projectId={project.id}
+                  projectTitle={project.title}
+                  imageUrl={project.imageUrl}
+                  videoUrl={project.videoUrl}
+                />
 
                 <ProjectFormCard mode="edit" initialValues={project} />
               </CardContent>

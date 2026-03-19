@@ -1,10 +1,12 @@
-import type { Asset } from "@/generated/prisma/client";
+import { AssetType, type Asset } from "@/generated/prisma/client";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
 import type { ProjectMutationInput } from "@/schemas/admin-project";
 import type {
+  AdminAssetRecord,
   AdminExperienceRecord,
   AdminOverview,
   AdminProjectRecord,
+  AssetMutationInput,
 } from "@/types/admin";
 
 export interface AdminRepository {
@@ -26,4 +28,11 @@ export interface AdminRepository {
   ): Promise<AdminExperienceRecord>;
   deleteExperience(id: string): Promise<void>;
   getCurrentCv(): Promise<Asset | null>;
+  listAssetsByType(type: AssetType): Promise<AdminAssetRecord[]>;
+  replaceCurrentCv(input: AssetMutationInput): Promise<AdminAssetRecord>;
+  attachProjectAsset(
+    projectId: string,
+    type: "image" | "video",
+    input: AssetMutationInput,
+  ): Promise<AdminAssetRecord>;
 }

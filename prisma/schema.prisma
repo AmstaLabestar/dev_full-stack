@@ -24,34 +24,34 @@ enum UserRole {
 }
 
 model User {
-  id             String       @id @default(cuid())
+  id             String      @id @default(cuid())
   name           String?
-  email          String       @unique
+  email          String      @unique
   emailVerified  DateTime?
   image          String?
   passwordHash   String?
-  role           UserRole     @default(ADMIN)
+  role           UserRole    @default(ADMIN)
   accounts       Account[]
   sessions       Session[]
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 }
 
 model Account {
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
   @@index([userId])
@@ -94,58 +94,60 @@ model PortfolioProfile {
 }
 
 model SocialLink {
-  id         String           @id @default(cuid())
-  label      String
-  href       String
-  sortOrder  Int              @default(0)
-  profileId  String
-  profile    PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  id        String           @id @default(cuid())
+  label     String
+  href      String
+  sortOrder Int              @default(0)
+  profileId String
+  profile   PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   @@index([profileId, sortOrder])
 }
 
 model Highlight {
-  id         String           @id @default(cuid())
-  label      String
-  value      String
-  detail     String           @db.Text
-  sortOrder  Int              @default(0)
-  profileId  String
-  profile    PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
+  id        String           @id @default(cuid())
+  label     String
+  value     String
+  detail    String           @db.Text
+  sortOrder Int              @default(0)
+  profileId String
+  profile   PortfolioProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 
   @@index([profileId, sortOrder])
 }
 
 model Project {
-  id          String          @id @default(cuid())
-  slug        String          @unique
-  title       String
-  summary     String          @db.Text
-  category    ProjectCategory
-  year        Int
-  featured    Boolean         @default(false)
-  tags        String[]
-  githubUrl   String
-  demoUrl     String
-  videoUrl    String?
-  sortOrder   Int             @default(0)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id        String          @id @default(cuid())
+  slug      String          @unique
+  title     String
+  summary   String          @db.Text
+  category  ProjectCategory
+  year      Int
+  featured  Boolean         @default(false)
+  tags      String[]
+  imageUrl  String?
+  githubUrl String
+  demoUrl   String
+  videoUrl  String?
+  sortOrder Int             @default(0)
+  assets    Asset[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 model Experience {
-  id         String   @id @default(cuid())
-  company    String
-  role       String
-  period     String
-  summary    String   @db.Text
-  sortOrder  Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(cuid())
+  company   String
+  role      String
+  period    String
+  summary   String   @db.Text
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Asset {
@@ -158,8 +160,11 @@ model Asset {
   size       Int
   url        String
   isCurrent  Boolean   @default(false)
+  projectId  String?
+  project    Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 
   @@index([type, isCurrent])
+  @@index([projectId, type, isCurrent])
 }

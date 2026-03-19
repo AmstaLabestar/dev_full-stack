@@ -14,6 +14,9 @@ function createRepositoryMock(): AdminRepository {
     updateExperience: vi.fn(),
     deleteExperience: vi.fn(),
     getCurrentCv: vi.fn(),
+    listAssetsByType: vi.fn(),
+    replaceCurrentCv: vi.fn(),
+    attachProjectAsset: vi.fn(),
   };
 }
 
@@ -29,6 +32,7 @@ describe("AdminService", () => {
       year: 2026,
       featured: true,
       tags: "LLM, RAG,  Observabilite ",
+      imageUrl: "",
       summary: "Un copilote IA robuste pour assister des operations critiques.",
       githubUrl: "https://github.com/hamza/ai-copilot",
       demoUrl: "https://demo.example.com/ai-copilot",
@@ -39,6 +43,7 @@ describe("AdminService", () => {
     expect(repository.createProject).toHaveBeenCalledWith(
       expect.objectContaining({
         tags: ["LLM", "RAG", "Observabilite"],
+        imageUrl: undefined,
         videoUrl: undefined,
       }),
     );

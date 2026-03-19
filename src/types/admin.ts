@@ -1,4 +1,9 @@
-import type { Asset, Experience, Project } from "@/generated/prisma/client";
+import type {
+  Asset,
+  AssetType,
+  Experience,
+  Project,
+} from "@/generated/prisma/client";
 
 export type AdminOverview = {
   projectCount: number;
@@ -19,6 +24,7 @@ export type AdminProjectRecord = Pick<
   | "year"
   | "featured"
   | "tags"
+  | "imageUrl"
   | "summary"
   | "githubUrl"
   | "demoUrl"
@@ -31,3 +37,28 @@ export type AdminExperienceRecord = Pick<
   Experience,
   "id" | "company" | "role" | "period" | "summary" | "sortOrder" | "updatedAt"
 >;
+
+export type AdminAssetRecord = Pick<
+  Asset,
+  | "id"
+  | "type"
+  | "title"
+  | "fileName"
+  | "storageKey"
+  | "mimeType"
+  | "size"
+  | "url"
+  | "isCurrent"
+  | "projectId"
+  | "updatedAt"
+>;
+
+export type AssetMutationInput = {
+  type: AssetType;
+  title: string;
+  fileName: string;
+  storageKey: string;
+  mimeType: string;
+  size: number;
+  url: string;
+};

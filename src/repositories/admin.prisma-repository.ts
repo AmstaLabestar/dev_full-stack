@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
 import type { ProjectMutationInput } from "@/schemas/admin-project";
+import type { AssetMutationInput } from "@/types/admin";
 
 export class PrismaAdminRepository implements AdminRepository {
   async getOverview() {
@@ -89,6 +90,73 @@ export class PrismaAdminRepository implements AdminRepository {
       orderBy: {
         updatedAt: "desc",
       },
+    });
+  }
+
+  async listAssetsByType(type: AssetType) {
+    return prisma.asset.findMany({
+      where: { type },
+      orderBy: [{ isCurrent: "desc" }, { updatedAt: "desc" }],
+    });
+  }
+
+  async replaceCurrentCv(input: AssetMutationInput) {
+    return prisma.$transaction(async (transaction) => {
+      await transaction.asset.updateMany({
+        where: {
+          type: AssetType.cv,
+          isCurrent: true,
+        },
+        data: {
+          isCurrent: false,
+        },
+      });
+
+      return transaction.asset.create({
+        data: {
+          ...input,
+          type: AssetType.cv,
+          isCurrent: true,
+        },
+      });
+    });
+  }
+
+  async attachProjectAsset(
+    projectId: string,
+    type: "image" | "video",
+    input: AssetMutationInput,
+  ) {
+    const assetType = type === "image" ? AssetType.image : AssetType.video;
+
+    return prisma.$transaction(async (transaction) => {
+      await transaction.asset.updateMany({
+        where: {
+          projectId,
+          type: assetType,
+          isCurrent: true,
+        },
+        data: {
+          isCurrent: false,
+        },
+      });
+
+      const asset = await transaction.asset.create({
+        data: {
+          ...input,
+          type: assetType,
+          isCurrent: true,
+          projectId,
+        },
+      });
+
+      await transaction.project.update({
+        where: { id: projectId },
+        data:
+          type === "image" ? { imageUrl: asset.url } : { videoUrl: asset.url },
+      });
+
+      return asset;
     });
   }
 }

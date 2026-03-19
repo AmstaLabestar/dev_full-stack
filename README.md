@@ -39,7 +39,8 @@ npm run prisma:studio
 - securiser l'acces admin avec Auth.js et Prisma Adapter
 - construire un front public premium avec animations, sections editoriales et CTA de conversion
 - enrichir le SEO de base avec metadata Next.js et contenu structure pour la landing page
-- livrer un back-office admin avec dashboard, CRUD projets et experiences, plus un module CV pret pour l'upload
+- livrer un back-office admin avec dashboard, CRUD projets et experiences
+- brancher l upload de fichiers pour le CV, les images et les videos projet
 
 ## Front public actuel
 
@@ -60,23 +61,33 @@ npm run prisma:studio
 - navigation dediee vers les modules metier
 - CRUD projets avec React Hook Form + Zod + server actions
 - CRUD experiences avec React Hook Form + Zod + server actions
-- module CV de consultation pret pour brancher l'upload fichier a l'etape suivante
+- upload local de CV PDF avec activation automatique de la version courante
+- upload image et video pour les projets avec stockage dans `public/uploads`
+- historique des assets CV en base Prisma
+
+## Stockage fichiers
+
+- `public/uploads/cv` : CV PDF
+- `public/uploads/images` : images projet
+- `public/uploads/videos` : videos projet
+- validation MIME et taille avant persistance
+- metadonnees d asset en base via Prisma
 
 ## Structure actuelle
 
-- `prisma/schema.prisma` : modele relationnel du portfolio et des comptes admin
+- `prisma/schema.prisma` : modele relationnel du portfolio, des comptes admin et des assets fichiers
 - `prisma/seed.ts` : seed initial de la base et de l'utilisateur admin
 - `src/app` : App Router, page publique, routes admin et actions serveur
 - `src/auth.ts` : configuration Auth.js
-- `src/components/admin` : shell admin, navigation, formulaires RHF et actions de suppression
+- `src/components/admin` : shell admin, navigation, formulaires RHF, uploaders et actions de suppression
 - `src/components/auth` : formulaire d'authentification admin
 - `src/components/sections` : sections du front public et preview experience
 - `src/components/ui` : design system partage, primitives et animations reveal
 - `src/data` : seed temporaire et fallback local enrichi
 - `src/hooks` : hooks React dedies a la presentation
-- `src/lib` : utilitaires transverses, autorisation, hashage et client Prisma
+- `src/lib` : utilitaires transverses, autorisation, hashage, stockage fichier et client Prisma
 - `src/repositories` : acces aux donnees Prisma, portfolio et admin
-- `src/schemas` : contrats metier Zod, publics et admin
+- `src/schemas` : contrats metier Zod, publics, admin et upload
 - `src/services` : orchestration applicative
 - `src/test` : setup de tests
 - `src/types` : types partages et augmentation NextAuth
@@ -87,7 +98,7 @@ npm run prisma:studio
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 8 :
+Executer les commandes suivantes avant de passer a l'etape 9 :
 
 ```bash
 npm run prisma:generate

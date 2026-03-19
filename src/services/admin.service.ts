@@ -1,3 +1,4 @@
+import { AssetType } from "@/generated/prisma/client";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import { PrismaAdminRepository } from "@/repositories/admin.prisma-repository";
 import type {
@@ -10,6 +11,7 @@ import type {
   ProjectMutationInput,
 } from "@/schemas/admin-project";
 import { projectMutationSchema } from "@/schemas/admin-project";
+import type { AssetMutationInput } from "@/types/admin";
 
 export class AdminService {
   constructor(private readonly repository: AdminRepository) {}
@@ -55,6 +57,22 @@ export class AdminService {
 
   async getCurrentCv() {
     return this.repository.getCurrentCv();
+  }
+
+  async listAssetsByType(type: AssetType) {
+    return this.repository.listAssetsByType(type);
+  }
+
+  async replaceCurrentCv(input: AssetMutationInput) {
+    return this.repository.replaceCurrentCv(input);
+  }
+
+  async attachProjectAsset(
+    projectId: string,
+    type: "image" | "video",
+    input: AssetMutationInput,
+  ) {
+    return this.repository.attachProjectAsset(projectId, type, input);
   }
 
   private parseProjectInput(input: ProjectFormValues): ProjectMutationInput {

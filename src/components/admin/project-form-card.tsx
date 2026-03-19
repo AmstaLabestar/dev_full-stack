@@ -33,6 +33,7 @@ const defaultValues: ProjectFormValues = {
   year: new Date().getFullYear(),
   featured: false,
   tags: "",
+  imageUrl: "",
   summary: "",
   githubUrl: "https://github.com/",
   demoUrl: "https://",
@@ -52,6 +53,7 @@ function toFormValues(initialValues?: AdminProjectRecord): ProjectFormValues {
     year: initialValues.year,
     featured: initialValues.featured,
     tags: initialValues.tags.join(", "),
+    imageUrl: initialValues.imageUrl ?? "",
     summary: initialValues.summary,
     githubUrl: initialValues.githubUrl,
     demoUrl: initialValues.demoUrl,
@@ -80,7 +82,7 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
           </h2>
           <p className="text-sm leading-6 text-slate-400">
             {mode === "create"
-              ? "Ajoute un nouveau cas d'usage visible sur le portfolio public."
+              ? "Ajoute un nouveau cas d usage visible sur le portfolio public."
               : "Ajuste le contenu, le tri et les liens sans quitter le dashboard."}
           </p>
         </div>
@@ -176,6 +178,15 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
               />
             </Field>
             <Field
+              label="Lien image"
+              error={form.formState.errors.imageUrl?.message}
+            >
+              <input
+                className={adminFieldClassName()}
+                {...form.register("imageUrl")}
+              />
+            </Field>
+            <Field
               label="Lien GitHub"
               error={form.formState.errors.githubUrl?.message}
             >
@@ -193,17 +204,16 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
                 {...form.register("demoUrl")}
               />
             </Field>
+            <Field
+              label="Lien video"
+              error={form.formState.errors.videoUrl?.message}
+            >
+              <input
+                className={adminFieldClassName()}
+                {...form.register("videoUrl")}
+              />
+            </Field>
           </div>
-
-          <Field
-            label="Lien video"
-            error={form.formState.errors.videoUrl?.message}
-          >
-            <input
-              className={adminFieldClassName()}
-              {...form.register("videoUrl")}
-            />
-          </Field>
 
           <Field label="Resume" error={form.formState.errors.summary?.message}>
             <textarea

@@ -49,7 +49,7 @@ async function main() {
   await prisma.highlight.deleteMany({ where: { profileId: profile.id } });
   await prisma.project.deleteMany();
   await prisma.experience.deleteMany();
-  await prisma.asset.deleteMany({ where: { type: "cv" } });
+  await prisma.asset.deleteMany();
 
   await prisma.socialLink.createMany({
     data: portfolioSeed.socialLinks.map((link, index) => ({
@@ -79,6 +79,7 @@ async function main() {
       year: project.year,
       featured: project.featured,
       tags: project.tags,
+      imageUrl: null,
       githubUrl: project.links.github,
       demoUrl: project.links.demo,
       videoUrl: project.links.video,
@@ -101,7 +102,7 @@ async function main() {
       type: "cv",
       title: "CV principal",
       fileName: "hamza-cv.pdf",
-      storageKey: "cv/hamza-cv.pdf",
+      storageKey: "uploads/cv/hamza-cv.pdf",
       mimeType: "application/pdf",
       size: 0,
       url: "/uploads/cv/hamza-cv.pdf",
