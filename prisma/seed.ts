@@ -1,6 +1,21 @@
-import { hashPassword } from "@/lib/password";
+import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/generated/prisma/client";
 import { portfolioSeed } from "@/data/portfolio";
-import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/lib/password";
+
+const connectionString =
+  process.env.DIRECT_URL ?? process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("DATABASE_URL or DIRECT_URL must be defined to run the seed.");
+}
+
+const prisma = new PrismaClient({
+  adapter: new PrismaPg({
+    connectionString,
+  }),
+});
 
 async function main() {
   const adminEmail = process.env.ADMIN_EMAIL ?? "admin@portfolio.dev";

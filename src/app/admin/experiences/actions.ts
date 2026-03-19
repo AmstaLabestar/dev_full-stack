@@ -59,13 +59,8 @@ export async function saveExperienceAction(input: {
   };
 }
 
-export async function deleteExperienceAction(id: string) {
+export async function deleteExperienceAction(id: string): Promise<void> {
   await requireAdminSession();
   await adminService.deleteExperience(id);
   revalidateAdminExperienceViews();
-
-  return {
-    status: "success" as const,
-    message: "Experience supprimee.",
-  };
 }

@@ -1,48 +1,32 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import { Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
 type RecordDeleteButtonProps = {
   label: string;
-  onDelete: () => Promise<{ status: "success" | "error"; message: string }>;
+  action: (formData: FormData) => void | Promise<void>;
 };
 
-export function RecordDeleteButton({
-  label,
-  onDelete,
-}: RecordDeleteButtonProps) {
-  const [message, setMessage] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
-
+export function RecordDeleteButton({ label, action }: RecordDeleteButtonProps) {
   return (
-    <div className="space-y-2">
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        disabled={isPending}
-        onClick={() => {
-          startTransition(async () => {
-            const confirmed = window.confirm(
-              `Supprimer definitivement ${label} ?`,
-            );
+    <form
+      action={action}
+      onSubmit={(event) => {
+        const confirmed = window.confirm(
+          `Supprimer definitivement ${label} ?`,
+        );
 
-            if (!confirmed) {
-              return;
-            }
-
-            const result = await onDelete();
-            setMessage(result.message);
-          });
-        }}
-      >
+        if (!confirmed) {
+          event.preventDefault();
+        }
+      }}
+    >
+      <Button type="submit" variant="outline" size="sm">
         <Trash2 className="size-4" />
-        {isPending ? "Suppression..." : "Supprimer"}
+        Supprimer
       </Button>
-      {message ? <p className="text-xs text-slate-400">{message}</p> : null}
-    </div>
+    </form>
   );
 }

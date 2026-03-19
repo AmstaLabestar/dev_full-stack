@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -33,11 +33,9 @@ const defaultValues: ProjectFormValues = {
   year: new Date().getFullYear(),
   featured: false,
   tags: "",
-  imageUrl: "",
   summary: "",
   githubUrl: "https://github.com/",
   demoUrl: "https://",
-  videoUrl: "",
   sortOrder: 0,
 };
 
@@ -53,11 +51,9 @@ function toFormValues(initialValues?: AdminProjectRecord): ProjectFormValues {
     year: initialValues.year,
     featured: initialValues.featured,
     tags: initialValues.tags.join(", "),
-    imageUrl: initialValues.imageUrl ?? "",
     summary: initialValues.summary,
     githubUrl: initialValues.githubUrl,
     demoUrl: initialValues.demoUrl,
-    videoUrl: initialValues.videoUrl ?? "",
     sortOrder: initialValues.sortOrder,
   };
 }
@@ -83,7 +79,7 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
           <p className="text-sm leading-6 text-slate-400">
             {mode === "create"
               ? "Ajoute un nouveau cas d usage visible sur le portfolio public."
-              : "Ajuste le contenu, le tri et les liens sans quitter le dashboard."}
+              : "Ajuste le contenu, le tri et les liens. Les medias sont geres par upload juste en dessous."}
           </p>
         </div>
 
@@ -178,15 +174,6 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
               />
             </Field>
             <Field
-              label="Lien image"
-              error={form.formState.errors.imageUrl?.message}
-            >
-              <input
-                className={adminFieldClassName()}
-                {...form.register("imageUrl")}
-              />
-            </Field>
-            <Field
               label="Lien GitHub"
               error={form.formState.errors.githubUrl?.message}
             >
@@ -202,15 +189,6 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
               <input
                 className={adminFieldClassName()}
                 {...form.register("demoUrl")}
-              />
-            </Field>
-            <Field
-              label="Lien video"
-              error={form.formState.errors.videoUrl?.message}
-            >
-              <input
-                className={adminFieldClassName()}
-                {...form.register("videoUrl")}
               />
             </Field>
           </div>

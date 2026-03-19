@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useActionState } from "react";
 import { adminSignInAction } from "@/app/admin/sign-in/actions";
@@ -22,7 +22,7 @@ export function AdminSignInForm() {
             Connexion admin
           </h1>
           <p className="text-sm leading-6 text-slate-400">
-            Acces reserve au back-office du portfolio.
+            Accès réservé au back-office du portfolio.
           </p>
         </div>
         <form action={formAction} className="space-y-4">
@@ -57,7 +57,7 @@ export function AdminSignInForm() {
               autoComplete="current-password"
               required
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white transition outline-none focus:border-cyan-300"
-              placeholder="��������"
+              placeholder="••••••••"
             />
           </div>
           {state.error ? (

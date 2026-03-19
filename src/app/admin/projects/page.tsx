@@ -1,4 +1,4 @@
-import { deleteProjectAction } from "@/app/admin/projects/actions";
+﻿import { deleteProjectAction } from "@/app/admin/projects/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ProjectAssetUploader } from "@/components/admin/project-asset-uploader";
 import { ProjectFormCard } from "@/components/admin/project-form-card";
@@ -15,7 +15,7 @@ export default async function AdminProjectsPage() {
   return (
     <AdminShell
       title="Gestion des projets"
-      description="Administre les projets visibles sur le portfolio public, leurs liens et leurs medias uploades."
+      description="Administre les projets visibles sur le portfolio public, leurs liens et leurs medias televerses."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
       <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -40,14 +40,14 @@ export default async function AdminProjectsPage() {
                         {project.title}
                       </h2>
                       <p className="mt-2 text-sm text-slate-400">
-                        /{project.slug} � ordre {project.sortOrder} �{" "}
+                        /{project.slug}  ordre {project.sortOrder} {" "}
                         {project.year}
                       </p>
                     </div>
                   </div>
                   <RecordDeleteButton
                     label={project.title}
-                    onDelete={() => deleteProjectAction(project.id)}
+                    action={deleteProjectAction.bind(null, project.id)}
                   />
                 </div>
 

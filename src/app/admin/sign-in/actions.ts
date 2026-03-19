@@ -1,6 +1,6 @@
 "use server";
 
-import AuthError from "next-auth";
+import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { adminSignInSchema } from "@/schemas/auth";
 
@@ -31,8 +31,14 @@ export async function adminSignInAction(
     });
   } catch (error) {
     if (error instanceof AuthError) {
+      if (error.type === "CredentialsSignin") {
+        return {
+          error: "Email ou mot de passe incorrect.",
+        };
+      }
+
       return {
-        error: "Email ou mot de passe incorrect.",
+        error: "La connexion a echoue. Verifie la configuration auth et la base de donnees.",
       };
     }
 

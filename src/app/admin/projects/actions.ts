@@ -152,13 +152,8 @@ export async function uploadProjectAssetAction(
   };
 }
 
-export async function deleteProjectAction(id: string) {
+export async function deleteProjectAction(id: string): Promise<void> {
   await requireAdminSession();
   await adminService.deleteProject(id);
   revalidateAdminProjectViews();
-
-  return {
-    status: "success" as const,
-    message: "Projet supprime.",
-  };
 }

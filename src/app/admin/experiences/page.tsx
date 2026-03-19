@@ -43,7 +43,7 @@ export default async function AdminExperiencesPage() {
                   </div>
                   <RecordDeleteButton
                     label={`${experience.role} chez ${experience.company}`}
-                    onDelete={() => deleteExperienceAction(experience.id)}
+                    action={deleteExperienceAction.bind(null, experience.id)}
                   />
                 </div>
 

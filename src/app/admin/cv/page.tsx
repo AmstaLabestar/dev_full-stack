@@ -35,7 +35,7 @@ export default async function AdminCvPage() {
               </h2>
               <p className="text-sm leading-6 text-slate-400">
                 {currentCv
-                  ? `Fichier ${currentCv.fileName} � mis a jour le ${currentCv.updatedAt.toLocaleDateString("fr-FR")}.`
+                  ? `Fichier ${currentCv.fileName}  mis a jour le ${currentCv.updatedAt.toLocaleDateString("fr-FR")}.`
                   : "Aucun PDF n a encore ete televerse dans le stockage local."}
               </p>
             </div>
@@ -83,7 +83,7 @@ export default async function AdminCvPage() {
                   </div>
                   <p className="text-sm text-slate-300">{asset.title}</p>
                   <p className="text-xs text-slate-500">
-                    {Math.round(asset.size / 1024)} Ko � {asset.mimeType} � mise
+                    {Math.round(asset.size / 1024)} Ko  {asset.mimeType} mise
                     a jour le {asset.updatedAt.toLocaleDateString("fr-FR")}
                   </p>
                 </div>

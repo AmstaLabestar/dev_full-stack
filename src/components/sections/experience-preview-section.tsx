@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+﻿import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
@@ -24,7 +24,7 @@ export function ExperiencePreviewSection({
             <div className="space-y-6">
               {experiences.map((experience, index) => (
                 <Reveal
-                  key={`${experience.company}-${experience.role}`}
+                  key={`${experience.company}-${experience.role}-${experience.period}-${index}`}
                   delay={index * 0.08}
                 >
                   <article className="border-b border-white/10 pb-6 last:border-b-0 last:pb-0">
@@ -43,9 +43,9 @@ export function ExperiencePreviewSection({
                       {experience.summary}
                     </p>
                     <ul className="mt-4 grid gap-3 text-sm text-slate-300">
-                      {experience.achievements.map((achievement) => (
+                      {experience.achievements.map((achievement, achievementIndex) => (
                         <li
-                          key={achievement}
+                          key={`${achievement}-${achievementIndex}`}
                           className="flex items-start gap-3"
                         >
                           <span className="mt-1 size-2 rounded-full bg-cyan-300" />

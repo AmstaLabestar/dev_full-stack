@@ -1,4 +1,4 @@
-import { unstable_cache } from "next/cache";
+﻿import { unstable_cache } from "next/cache";
 
 import { formatFocusAreas } from "@/lib/formatters";
 import { createPortfolioRepository } from "@/repositories/portfolio.repository-factory";
@@ -14,7 +14,7 @@ export class PortfolioService {
     return {
       profile: {
         ...portfolio.profile,
-        availability: `${portfolio.profile.availability} � ${formatFocusAreas(
+        availability: `${portfolio.profile.availability} · ${formatFocusAreas(
           portfolio.profile.focusAreas,
         )}`,
       },

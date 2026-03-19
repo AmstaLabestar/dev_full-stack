@@ -1,13 +1,13 @@
-import type { Portfolio } from "@/types/portfolio";
+﻿import type { Portfolio } from "@/types/portfolio";
 
 export const portfolioSeed: Portfolio = {
   profile: {
     name: "Hamza",
-    role: "Senior Full-Stack Developer",
-    location: "Paris, France",
+    role: "Full-Stack Developer",
+    location: "Ouagadougou, Burkina Faso",
     intro:
-      "Je con�ois des produits web robustes, du design system jusqu'aux workflows DevOps, avec une exigence forte sur la performance, la maintenabilit� et l'exp�rience utilisateur.",
-    availability: "Disponible pour des missions � fort impact",
+      "Je conçois des produits web robustes, du design system jusqu'aux workflows DevOps, avec une exigence forte sur la performance, la maintenabilité et l'expérience utilisateur.",
+    availability: "Disponible pour des missions à fort impact",
     yearsOfExperience: 8,
     focusAreas: [
       "Architecture logicielle",
@@ -32,18 +32,18 @@ export const portfolioSeed: Portfolio = {
   highlights: [
     {
       label: "Experience",
-      value: "8+ ans",
+      value: "3+ ans",
       detail: "Conception, delivery et maintenance de produits critiques.",
     },
     {
       label: "Projets lances",
-      value: "24",
-      detail: "Produits B2B, plateformes internes et exp�riences client.",
+      value: "10+",
+      detail: "Produits B2B, plateformes internes et expériences client.",
     },
     {
       label: "Stack",
       value: "Full-stack",
-      detail: "Next.js, Node.js, PostgreSQL, CI/CD et cloud deployment.",
+      detail: "React.js, Node.js, PostgreSQL, CI/CD et cloud deployment.",
     },
   ],
   projects: [
@@ -51,12 +51,12 @@ export const portfolioSeed: Portfolio = {
       slug: "saas-analytics-suite",
       title: "SaaS Analytics Suite",
       summary:
-        "Une plateforme d'analytics temps r�el pour �quipes produit avec tableaux de bord, pipelines d'�v�nements et exports automatis�s.",
+        "Une plateforme d'analytics temps réel pour équipes produit avec tableaux de bord, pipelines d'événements et exports automatisés.",
       category: "web",
       year: 2025,
       featured: true,
       tags: ["Next.js", "TypeScript", "PostgreSQL", "Observability"],
-      metrics: ["-38% sur le temps d'analyse", "99.95% de disponibilit�"],
+      metrics: ["-38% sur le temps d'analyse", "99.95% de disponibilité"],
       links: {
         github: "https://github.com/hamza/saas-analytics-suite",
         demo: "https://demo.example.com/analytics-suite",
@@ -66,12 +66,12 @@ export const portfolioSeed: Portfolio = {
       slug: "field-ops-mobile",
       title: "Field Ops Mobile",
       summary:
-        "Une application mobile pour op�rations terrain avec synchronisation offline, reporting photo et orchestration des interventions.",
+        "Une application mobile pour opérations terrain avec synchronisation offline, reporting photo et orchestration des interventions.",
       category: "mobile",
       year: 2024,
       featured: true,
       tags: ["React Native", "Offline First", "Push Notifications"],
-      metrics: ["2x plus rapide sur site", "0 perte de donn�e offline"],
+      metrics: ["2x plus rapide sur site", "0 perte de donnée offline"],
       links: {
         github: "https://github.com/hamza/field-ops-mobile",
         demo: "https://demo.example.com/field-ops-mobile",
@@ -82,12 +82,12 @@ export const portfolioSeed: Portfolio = {
       slug: "ai-support-copilot",
       title: "AI Support Copilot",
       summary:
-        "Un copilote IA pour support client combinant recherche documentaire, suggestions de r�ponse et supervision humaine.",
+        "Un copilote IA pour support client combinant recherche documentaire, suggestions de réponse et supervision humaine.",
       category: "ai",
       year: 2026,
       featured: true,
       tags: ["LLM", "RAG", "Next.js", "Evaluation"],
-      metrics: ["-42% sur le temps de r�ponse", "+18 pts de satisfaction"],
+      metrics: ["-42% sur le temps de réponse", "+18 pts de satisfaction"],
       links: {
         github: "https://github.com/hamza/ai-support-copilot",
         demo: "https://demo.example.com/ai-support-copilot",
@@ -100,10 +100,10 @@ export const portfolioSeed: Portfolio = {
       role: "Lead Full-Stack Engineer",
       period: "2023 - Aujourd'hui",
       summary:
-        "Pilotage de la roadmap technique, standardisation des pratiques de delivery et construction de produits SaaS multi-�quipes.",
+        "Pilotage de la roadmap technique, standardisation des pratiques de delivery et construction de produits SaaS multi-équipes.",
       achievements: [
-        "Mise en place d'une architecture modulaire partag�e entre quatre squads.",
-        "R�duction du temps de release hebdomadaire � un d�ploiement quotidien.",
+        "Mise en place d'une architecture modulaire partagée entre quatre squads.",
+        "Réduction du temps de release hebdomadaire à un déploiement quotidien.",
       ],
     },
     {
@@ -111,10 +111,10 @@ export const portfolioSeed: Portfolio = {
       role: "Senior Software Engineer",
       period: "2020 - 2023",
       summary:
-        "Conception de plateformes m�tier, optimisation des performances frontend et industrialisation du cycle CI/CD.",
+        "Conception de plateformes métier, optimisation des performances frontend et industrialisation du cycle CI/CD.",
       achievements: [
-        "Refonte d'un back-office critique utilis� par plus de 300 collaborateurs.",
-        "Am�lioration du Core Web Vitals sur trois applications strat�giques.",
+        "Refonte d'un back-office critique utilisé par plus de 300 collaborateurs.",
+        "Amélioration du Core Web Vitals sur trois applications stratégiques.",
       ],
     },
   ],
@@ -136,37 +136,37 @@ export const portfolioSeed: Portfolio = {
     {
       title: "Architecture produit",
       description:
-        "Je structure des applications maintenables avec une s�paration claire entre domaine, UI, acc�s aux donn�es et workflow de delivery.",
-      outcomes: ["Codebase plus lisible", "�volutivit� ma�tris�e"],
+        "Je structure des applications maintenables avec une séparation claire entre domaine, UI, accès aux données et workflow de delivery.",
+      outcomes: ["Codebase plus lisible", "Évolutivité maîtrisée"],
     },
     {
       title: "Delivery full-stack",
       description:
-        "Je prends en charge la cha�ne compl�te, du front premium jusqu'aux fondations backend, avec une attention particuli�re � la qualit� d'ex�cution.",
-      outcomes: ["Time-to-market r�duit", "Dette technique contr�l�e"],
+        "Je prends en charge la chaîne complète, du front premium jusqu'aux fondations backend, avec une attention particulière à la qualité d'exécution.",
+      outcomes: ["Time-to-market réduit", "Dette technique contrôlée"],
     },
     {
       title: "Modernisation & optimisation",
       description:
-        "Je reprends des produits existants pour am�liorer la performance, l'exp�rience utilisateur et la fiabilit� op�rationnelle.",
-      outcomes: ["Core Web Vitals am�lior�s", "Processus de release stabilis�"],
+        "Je reprends des produits existants pour améliorer la performance, l'expérience utilisateur et la fiabilité opérationnelle.",
+      outcomes: ["Core Web Vitals améliorés", "Processus de release stabilisé"],
     },
   ],
   contactSteps: [
     {
       title: "Cadrage rapide",
       detail:
-        "30 minutes pour comprendre le contexte, les contraintes et le niveau de maturit� du produit.",
+        "30 minutes pour comprendre le contexte, les contraintes et le niveau de maturité du produit.",
     },
     {
-      title: "Plan d'ex�cution",
+      title: "Plan d'exécution",
       detail:
-        "Une proposition claire avec priorit�s, architecture cible, risques et d�coupage pragmatique.",
+        "Une proposition claire avec priorités, architecture cible, risques et découpage pragmatique.",
     },
     {
       title: "Lancement",
       detail:
-        "Un d�marrage propre avec standards de qualit�, livraison incr�mentale et visibilit� sur les prochaines �tapes.",
+        "Un démarrage propre avec standards de qualité, livraison incrémentale et visibilité sur les prochaines étapes.",
     },
   ],
 };

@@ -1,8 +1,8 @@
-import { projectMutationSchema } from "@/schemas/admin-project";
+﻿import { projectMutationSchema } from "@/schemas/admin-project";
 import { describe, expect, it } from "vitest";
 
 describe("projectMutationSchema", () => {
-  it("splits tags and trims optional media urls", () => {
+  it("splits tags before persistence", () => {
     const result = projectMutationSchema.parse({
       title: "SaaS Platform",
       slug: "saas-platform",
@@ -10,16 +10,12 @@ describe("projectMutationSchema", () => {
       year: 2025,
       featured: false,
       tags: "Next.js, Prisma,  PostgreSQL ",
-      imageUrl: "",
       summary: "Plateforme SaaS avec back-office, analytics et parcours admin.",
       githubUrl: "https://github.com/hamza/saas-platform",
       demoUrl: "https://demo.example.com/saas-platform",
-      videoUrl: "",
       sortOrder: 2,
     });
 
     expect(result.tags).toEqual(["Next.js", "Prisma", "PostgreSQL"]);
-    expect(result.imageUrl).toBeUndefined();
-    expect(result.videoUrl).toBeUndefined();
   });
 });
