@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import { Geist } from "next/font/google";
+import { Fraunces, Manrope } from "next/font/google";
 import { cn } from "@/lib/utils";
+import "./globals.css";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -20,7 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={cn("font-sans", geist.variable)}>
+    <html
+      lang="fr"
+      className={cn("dark font-sans", manrope.variable, fraunces.variable)}
+    >
       <body>{children}</body>
     </html>
   );

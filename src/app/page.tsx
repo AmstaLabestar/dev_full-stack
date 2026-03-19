@@ -2,14 +2,18 @@ import { ExperiencePreviewSection } from "@/components/sections/experience-previ
 import { FeaturedProjectsSection } from "@/components/sections/featured-projects-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { ProfileHighlights } from "@/components/sections/profile-highlights";
+import { buttonVariants } from "@/components/ui/button-variants";
+import { Card, CardContent } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { cn } from "@/lib/utils";
 import { portfolioService } from "@/services/portfolio.service";
 
 export default async function Home() {
   const landingPageData = await portfolioService.getLandingPageData();
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
+    <main className="min-h-screen bg-transparent text-slate-50">
       <HeroSection
         profile={landingPageData.profile}
         socialLinks={landingPageData.socialLinks}
@@ -25,18 +29,28 @@ export default async function Home() {
       />
       <section id="contact" className="pt-8 pb-24">
         <Container>
-          <div className="rounded-[2rem] border border-cyan-400/20 bg-cyan-400/10 p-8 text-center">
-            <p className="text-sm tracking-[0.3em] text-cyan-200 uppercase">
-              Contact
-            </p>
-            <h2 className="mt-4 text-3xl font-semibold text-white">
-              Une base architecturee, prete pour les prochaines etapes.
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-200">
-              L&apos;etape suivante structurera le design system avec des
-              composants UI reutilisables et l&apos;integration de shadcn/ui.
-            </p>
-          </div>
+          <Card className="border-primary/20 from-primary/12 bg-gradient-to-br via-cyan-400/8 to-transparent">
+            <CardContent className="p-8 sm:p-10">
+              <SectionHeading
+                eyebrow="Contact"
+                title="Une base UI premium, prete pour les prochaines couches produit."
+                description="L'etape suivante integrera les composants de design system aux workflows back-office et aux futures interfaces admin."
+                align="center"
+                className="mx-auto max-w-3xl"
+              />
+              <div className="mt-8 flex justify-center">
+                <a
+                  href="mailto:contact@example.com"
+                  className={cn(
+                    buttonVariants({ variant: "secondary", size: "lg" }),
+                    "h-12 rounded-full px-6",
+                  )}
+                >
+                  Planifier un premier echange
+                </a>
+              </div>
+            </CardContent>
+          </Card>
         </Container>
       </section>
     </main>

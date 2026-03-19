@@ -1,6 +1,6 @@
 # HamzaDev Portfolio
 
-Socle du portfolio full-stack avec Next.js App Router, TypeScript, Tailwind CSS, ESLint, Prettier et architecture modulaire.
+Socle du portfolio full-stack avec Next.js App Router, TypeScript, Tailwind CSS, shadcn/ui, ESLint, Prettier et architecture modulaire.
 
 ## Prerequis
 
@@ -27,11 +27,14 @@ npm run build
 - configurer Prettier avec tri Tailwind
 - structurer l'application par couches metier
 - ajouter une base de tests unitaires avec Vitest
+- poser un design system partage avec shadcn/ui
+- definir les tokens visuels, typographies et primitives UI
 
 ## Structure actuelle
 
 - `src/app` : point d'entree App Router
 - `src/components` : composants UI et sections
+- `src/components/ui` : primitives du design system
 - `src/data` : jeux de donnees temporaires
 - `src/hooks` : hooks React dedies a la presentation
 - `src/lib` : utilitaires transverses
@@ -44,10 +47,11 @@ npm run build
 - `.prettierrc.json` : formatage partage
 - `tsconfig.json` : configuration TypeScript
 - `vitest.config.ts` : configuration des tests unitaires
+- `components.json` : configuration shadcn/ui
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 3 :
+Executer les commandes suivantes avant de passer a l'etape 4 :
 
 ```bash
 npm run lint
