@@ -23,6 +23,7 @@ npm run test:e2e:ui
 npm run build
 npm run prisma:generate
 npm run prisma:migrate:dev
+npm run prisma:migrate:deploy
 npm run prisma:seed
 npm run prisma:studio
 ```
@@ -45,6 +46,7 @@ npm run prisma:studio
 - brancher l upload de fichiers pour le CV, les images et les videos projet
 - renforcer le SEO et la performance avec metadata avancees, JSON-LD, sitemap, robots, manifest et ISR
 - mettre en place une strategie de tests complete avec Vitest et Playwright
+- preparer une CI GitHub Actions et un deploiement Vercel de production
 
 ## Front public actuel
 
@@ -89,6 +91,31 @@ npm run prisma:studio
 - `e2e/seo.spec.ts` : robots, sitemap, manifest et images sociales
 - `.gitignore` : exclusion de `playwright-report` et `test-results`
 
+## CI/CD Vercel
+
+- `.github/workflows/quality.yml` : pipeline GitHub Actions pour `prisma:generate`, `lint`, `typecheck`, `test:run` et `build`
+- `vercel.json` : configuration Next.js et headers de securite de base
+- `.env.example` : variables d environnement attendues localement et sur Vercel
+- strategie recommande :
+  - `main` -> production Vercel
+  - branches / PR -> preview deployments Vercel
+
+## Variables Vercel a configurer
+
+- `DATABASE_URL`
+- `AUTH_SECRET`
+- `AUTH_URL`
+- `ADMIN_EMAIL`
+- `ADMIN_PASSWORD`
+
+## Mise en production Vercel
+
+1. Connecter le repository GitHub a Vercel.
+2. Selectionner `main` comme branche de production.
+3. Ajouter les variables d environnement ci-dessus dans Vercel.
+4. Lancer `npm run prisma:migrate:deploy` sur la base cible avant ou au moment du premier deploiement.
+5. Verifier le login admin, les uploads et les routes SEO apres le premier deploy.
+
 ## Stockage fichiers
 
 - `public/uploads/cv` : CV PDF
@@ -96,6 +123,7 @@ npm run prisma:studio
 - `public/uploads/videos` : videos projet
 - validation MIME et taille avant persistance
 - metadonnees d asset en base via Prisma
+- point d attention : sur Vercel, le stockage disque local est ephemere. Pour la production, il faudra remplacer ce stockage par Vercel Blob, S3 ou un stockage externe equivalent.
 
 ## Structure actuelle
 
@@ -121,10 +149,12 @@ npm run prisma:studio
 - `prisma.config.ts` : configuration Prisma
 - `vitest.config.ts` : configuration des tests unitaires
 - `playwright.config.ts` : configuration des tests e2e
+- `.github/workflows/quality.yml` : pipeline CI
+- `vercel.json` : configuration Vercel
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 11 :
+Executer les commandes suivantes avant de passer a la suite :
 
 ```bash
 npm run lint
