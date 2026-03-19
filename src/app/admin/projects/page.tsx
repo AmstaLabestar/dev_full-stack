@@ -1,0 +1,68 @@
+import { deleteProjectAction } from "@/app/admin/projects/actions";
+import { AdminShell } from "@/components/admin/admin-shell";
+import { ProjectFormCard } from "@/components/admin/project-form-card";
+import { RecordDeleteButton } from "@/components/admin/record-delete-button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { requireAdminSession } from "@/lib/auth-guard";
+import { adminService } from "@/services/admin.service";
+
+export default async function AdminProjectsPage() {
+  const session = await requireAdminSession();
+  const projects = await adminService.listProjects();
+
+  return (
+    <AdminShell
+      title="Gestion des projets"
+      description="Administre les projets visibles sur le portfolio public, leurs liens et leur priorite d'affichage."
+      sessionLabel={session.user.email ?? "Administrateur"}
+    >
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+        <ProjectFormCard mode="create" />
+
+        <div className="space-y-4">
+          {projects.map((project) => (
+            <Card key={project.id} className="bg-white/6">
+              <CardContent className="space-y-6 p-6">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge>{project.category}</Badge>
+                      <Badge
+                        variant={project.featured ? "accent" : "secondary"}
+                      >
+                        {project.featured ? "Featured" : "Standard"}
+                      </Badge>
+                    </div>
+                    <div>
+                      <h2 className="font-display text-2xl font-semibold text-white">
+                        {project.title}
+                      </h2>
+                      <p className="mt-2 text-sm text-slate-400">
+                        /{project.slug} � ordre {project.sortOrder} �{" "}
+                        {project.year}
+                      </p>
+                    </div>
+                  </div>
+                  <RecordDeleteButton
+                    label={project.title}
+                    onDelete={() => deleteProjectAction(project.id)}
+                  />
+                </div>
+
+                <ProjectFormCard mode="edit" initialValues={project} />
+              </CardContent>
+            </Card>
+          ))}
+          {projects.length === 0 ? (
+            <Card className="bg-white/6">
+              <CardContent className="p-6 text-sm leading-6 text-slate-400">
+                Aucun projet en base pour l instant.
+              </CardContent>
+            </Card>
+          ) : null}
+        </div>
+      </div>
+    </AdminShell>
+  );
+}
