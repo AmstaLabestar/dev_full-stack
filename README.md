@@ -12,11 +12,14 @@ Portfolio full-stack de niveau production construit avec Next.js App Router, Typ
 
 ```bash
 npm run dev
+npm run dev:test
 npm run lint
 npm run typecheck
 npm run format
 npm run format:check
 npm run test:run
+npm run test:e2e
+npm run test:e2e:ui
 npm run build
 npm run prisma:generate
 npm run prisma:migrate:dev
@@ -41,6 +44,7 @@ npm run prisma:studio
 - livrer un back-office admin avec dashboard, CRUD projets et experiences
 - brancher l upload de fichiers pour le CV, les images et les videos projet
 - renforcer le SEO et la performance avec metadata avancees, JSON-LD, sitemap, robots, manifest et ISR
+- mettre en place une strategie de tests complete avec Vitest et Playwright
 
 ## Front public actuel
 
@@ -77,6 +81,14 @@ npm run prisma:studio
 - `src/services/portfolio.service.ts` : cache ISR pour la landing
 - `next.config.ts` : compression, `poweredByHeader` desactive, `optimizePackageImports` pour `lucide-react`
 
+## Strategie de tests
+
+- `vitest.config.ts` : scope unitaire limite a `src/**/*.{test,spec}.{ts,tsx}`
+- `playwright.config.ts` : tests e2e avec web server Next.js local
+- `e2e/app.spec.ts` : parcours landing publique et redirection admin
+- `e2e/seo.spec.ts` : robots, sitemap, manifest et images sociales
+- `.gitignore` : exclusion de `playwright-report` et `test-results`
+
 ## Stockage fichiers
 
 - `public/uploads/cv` : CV PDF
@@ -101,21 +113,23 @@ npm run prisma:studio
 - `src/repositories` : acces aux donnees Prisma, portfolio et admin
 - `src/schemas` : contrats metier Zod, publics, admin et upload
 - `src/services` : orchestration applicative et cache de la landing
-- `src/test` : setup de tests
+- `src/test` : setup de tests unitaires
+- `e2e` : tests Playwright end-to-end
 - `src/types` : types partages et augmentation NextAuth
 - `middleware.ts` : protection des routes `/admin/*`
 - `components.json` : configuration shadcn/ui
 - `prisma.config.ts` : configuration Prisma
 - `vitest.config.ts` : configuration des tests unitaires
+- `playwright.config.ts` : configuration des tests e2e
 
 ## Verification
 
-Executer les commandes suivantes avant de passer a l'etape 10 :
+Executer les commandes suivantes avant de passer a l'etape 11 :
 
 ```bash
-npm run prisma:generate
 npm run lint
 npm run typecheck
 npm run test:run
+npm run test:e2e
 npm run build
 ```

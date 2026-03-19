@@ -26,7 +26,7 @@ export function HeroSection({ profile, socialLinks }: HeroSectionProps) {
                   {profile.role}
                 </p>
                 <h1 className="font-display max-w-4xl text-5xl font-semibold tracking-tight text-balance text-white sm:text-7xl">
-                  {profile.name}, architecte et d�veloppeur full-stack pour
+                  {profile.name}, architecte et developpeur full-stack pour
                   produits web exigeants.
                 </h1>
                 <p className="max-w-2xl text-lg leading-8 text-slate-300">
