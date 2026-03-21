@@ -5,6 +5,8 @@ import { describe, expect, it, vi } from "vitest";
 function createRepositoryMock(): AdminRepository {
   return {
     getOverview: vi.fn(),
+    getProfile: vi.fn(),
+    replaceCurrentProfileImage: vi.fn(),
     listProjects: vi.fn(),
     createProject: vi.fn(),
     updateProject: vi.fn(),

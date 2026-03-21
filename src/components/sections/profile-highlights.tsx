@@ -1,8 +1,5 @@
-"use client";
-
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { useProfileHighlights } from "@/hooks/use-profile-highlights";
 import type { PortfolioHighlight } from "@/types/portfolio";
 
 type ProfileHighlightsProps = {
@@ -10,18 +7,19 @@ type ProfileHighlightsProps = {
 };
 
 export function ProfileHighlights({ highlights }: ProfileHighlightsProps) {
-  const items = useProfileHighlights(highlights);
-
   return (
     <div className="grid gap-4 md:grid-cols-3">
-      {items.map((highlight) => (
-        <Card key={highlight.key} className="bg-white/6">
+      {highlights.map((highlight, index) => (
+        <Card
+          key={`${highlight.label}-${highlight.value}-${index}`}
+          className="border-slate-200/80 bg-white/82 dark:border-white/10 dark:bg-white/6"
+        >
           <CardContent>
             <Badge variant="secondary">{highlight.label}</Badge>
-            <p className="font-display mt-4 text-4xl font-semibold text-white">
+            <p className="font-display mt-4 text-4xl font-semibold text-slate-950 dark:text-white">
               {highlight.value}
             </p>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
+            <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
               {highlight.detail}
             </p>
           </CardContent>

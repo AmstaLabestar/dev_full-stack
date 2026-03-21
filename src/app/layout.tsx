@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import { cookies } from "next/headers";
 import { Fraunces, Manrope } from "next/font/google";
 
+import { ThemeToggle } from "@/components/theme-toggle";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 import "./globals.css";
@@ -19,7 +21,7 @@ const fraunces = Fraunces({
 
 export const viewport: Viewport = {
   themeColor: "#020617",
-  colorScheme: "dark",
+  colorScheme: "light dark",
 };
 
 export const metadata: Metadata = {
@@ -78,17 +80,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const storedTheme = cookieStore.get("portfolio-theme")?.value;
+  const initialTheme = storedTheme === "light" ? "light" : "dark";
+
   return (
     <html
       lang="fr"
-      className={cn("dark font-sans", manrope.variable, fraunces.variable)}
+      className={cn(
+        initialTheme,
+        "font-sans",
+        manrope.variable,
+        fraunces.variable,
+      )}
+      suppressHydrationWarning
     >
-      <body>{children}</body>
+      <body>
+        <ThemeToggle initialTheme={initialTheme} />
+        {children}
+      </body>
     </html>
   );
 }

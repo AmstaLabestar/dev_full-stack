@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+﻿import { describe, expect, it } from "vitest";
 import { portfolioSchema } from "@/schemas/portfolio";
 
 const validPayload = {
@@ -11,6 +11,7 @@ const validPayload = {
     availability: "Disponible",
     yearsOfExperience: 7,
     focusAreas: ["Architecture", "Frontend", "Backend"],
+    profileImageUrl: "https://example.com/profile.jpg",
   },
   socialLinks: [
     { label: "GitHub", href: "https://github.com/hamza" },
@@ -36,6 +37,7 @@ const validPayload = {
       featured: true,
       tags: ["Next.js"],
       metrics: ["Performance", "UX premium"],
+      imageUrl: "/uploads/images/app-web.jpg",
       links: {
         github: "https://github.com/hamza/app-web",
         demo: "https://demo.example.com/app-web",
@@ -51,6 +53,7 @@ const validPayload = {
       featured: false,
       tags: ["React Native"],
       metrics: ["Offline first", "Productivite terrain"],
+      imageUrl: "/uploads/images/app-mobile.jpg",
       links: {
         github: "https://github.com/hamza/app-mobile",
         demo: "https://demo.example.com/app-mobile",
@@ -66,6 +69,7 @@ const validPayload = {
       featured: true,
       tags: ["LLM"],
       metrics: ["RAG", "Supervision"],
+      imageUrl: "/uploads/images/app-ai.jpg",
       links: {
         github: "https://github.com/hamza/app-ai",
         demo: "https://demo.example.com/app-ai",

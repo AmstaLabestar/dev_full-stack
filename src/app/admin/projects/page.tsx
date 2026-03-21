@@ -1,4 +1,4 @@
-﻿import { deleteProjectAction } from "@/app/admin/projects/actions";
+import { deleteProjectAction } from "@/app/admin/projects/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ProjectAssetUploader } from "@/components/admin/project-asset-uploader";
 import { ProjectFormCard } from "@/components/admin/project-form-card";
@@ -18,6 +18,10 @@ export default async function AdminProjectsPage() {
       description="Administre les projets visibles sur le portfolio public, leurs liens et leurs medias televerses."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
+      <div className="mb-6 rounded-3xl border border-cyan-300/15 bg-cyan-400/8 px-5 py-4 text-sm leading-6 text-cyan-100/90">
+        La landing affiche jusqu a 3 projets mis en avant. L ordre le plus faible
+        passe en premier. Tous les projets restent consultables sur /projects.
+      </div>
       <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <ProjectFormCard mode="create" />
 
@@ -32,7 +36,7 @@ export default async function AdminProjectsPage() {
                       <Badge
                         variant={project.featured ? "accent" : "secondary"}
                       >
-                        {project.featured ? "Featured" : "Standard"}
+                        {project.featured ? "Mis en avant" : "Standard"}
                       </Badge>
                     </div>
                     <div>
@@ -40,8 +44,7 @@ export default async function AdminProjectsPage() {
                         {project.title}
                       </h2>
                       <p className="mt-2 text-sm text-slate-400">
-                        /{project.slug}  ordre {project.sortOrder} {" "}
-                        {project.year}
+                        /{project.slug} ordre {project.sortOrder} {project.year}
                       </p>
                     </div>
                   </div>

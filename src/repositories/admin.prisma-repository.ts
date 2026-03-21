@@ -1,4 +1,4 @@
-import { AssetType } from "@/generated/prisma/client";
+﻿import { AssetType } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
@@ -7,12 +7,13 @@ import type { AssetMutationInput } from "@/types/admin";
 
 export class PrismaAdminRepository implements AdminRepository {
   async getOverview() {
-    const [projectCount, featuredProjectCount, experienceCount, currentCv] =
+    const [projectCount, featuredProjectCount, experienceCount, currentCv, profile] =
       await Promise.all([
         prisma.project.count(),
         prisma.project.count({ where: { featured: true } }),
         prisma.experience.count(),
         this.getCurrentCv(),
+        this.getProfile(),
       ]);
 
     return {
@@ -28,7 +29,78 @@ export class PrismaAdminRepository implements AdminRepository {
             updatedAt: currentCv.updatedAt,
           }
         : null,
+      hasProfileImage: Boolean(profile?.profileImageUrl),
     };
+  }
+
+  async getProfile() {
+    const profile = await prisma.portfolioProfile.findFirst({
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+
+    if (!profile) {
+      return null;
+    }
+
+    const currentProfileImage = await prisma.asset.findFirst({
+      where: {
+        type: AssetType.image,
+        projectId: null,
+        isCurrent: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+
+    return {
+      id: profile.id,
+      name: profile.name,
+      role: profile.role,
+      profileImageUrl: currentProfileImage?.url,
+      updatedAt: currentProfileImage?.updatedAt ?? profile.updatedAt,
+    };
+  }
+
+  async replaceCurrentProfileImage(profileId: string, input: AssetMutationInput) {
+    return prisma.$transaction(async (transaction) => {
+      await transaction.asset.updateMany({
+        where: {
+          type: AssetType.image,
+          projectId: null,
+          isCurrent: true,
+        },
+        data: {
+          isCurrent: false,
+        },
+      });
+
+      const asset = await transaction.asset.create({
+        data: {
+          ...input,
+          type: AssetType.image,
+          isCurrent: true,
+        },
+      });
+
+      const profile = await transaction.portfolioProfile.findUnique({
+        where: { id: profileId },
+      });
+
+      if (!profile) {
+        throw new Error("Portfolio profile not found.");
+      }
+
+      return {
+        id: profile.id,
+        name: profile.name,
+        role: profile.role,
+        profileImageUrl: asset.url,
+        updatedAt: asset.updatedAt,
+      };
+    });
   }
 
   async listProjects() {

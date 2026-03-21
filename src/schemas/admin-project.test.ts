@@ -18,4 +18,21 @@ describe("projectMutationSchema", () => {
 
     expect(result.tags).toEqual(["Next.js", "Prisma", "PostgreSQL"]);
   });
+
+  it("allows an empty project link", () => {
+    const result = projectMutationSchema.parse({
+      title: "Mobile App",
+      slug: "mobile-app",
+      category: "mobile",
+      year: 2025,
+      featured: true,
+      tags: "React Native, Offline",
+      summary: "Application mobile avec acces principal via video et distribution privee.",
+      githubUrl: "https://github.com/hamza/mobile-app",
+      demoUrl: "",
+      sortOrder: 1,
+    });
+
+    expect(result.demoUrl).toBe("");
+  });
 });

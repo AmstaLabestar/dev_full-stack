@@ -1,16 +1,22 @@
-import { AssetType, type Asset } from "@/generated/prisma/client";
+﻿import { AssetType, type Asset } from "@/generated/prisma/client";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
 import type { ProjectMutationInput } from "@/schemas/admin-project";
 import type {
   AdminAssetRecord,
   AdminExperienceRecord,
   AdminOverview,
+  AdminProfileRecord,
   AdminProjectRecord,
   AssetMutationInput,
 } from "@/types/admin";
 
 export interface AdminRepository {
   getOverview(): Promise<AdminOverview>;
+  getProfile(): Promise<AdminProfileRecord | null>;
+  replaceCurrentProfileImage(
+    profileId: string,
+    input: AssetMutationInput,
+  ): Promise<AdminProfileRecord>;
   listProjects(): Promise<AdminProjectRecord[]>;
   createProject(input: ProjectMutationInput): Promise<AdminProjectRecord>;
   updateProject(

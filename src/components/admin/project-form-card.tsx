@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -35,7 +35,7 @@ const defaultValues: ProjectFormValues = {
   tags: "",
   summary: "",
   githubUrl: "https://github.com/",
-  demoUrl: "https://",
+  demoUrl: "",
   sortOrder: 0,
 };
 
@@ -78,8 +78,13 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
           </h2>
           <p className="text-sm leading-6 text-slate-400">
             {mode === "create"
-              ? "Ajoute un nouveau cas d usage visible sur le portfolio public."
-              : "Ajuste le contenu, le tri et les liens. Les medias sont geres par upload juste en dessous."}
+              ? "Ajoute un nouveau projet visible sur le portfolio public."
+              : "Ajuste le contenu, le tri et les liens du projet. Les medias sont geres par upload juste en dessous."}
+          </p>
+          <p className="rounded-2xl border border-cyan-300/15 bg-cyan-400/8 px-4 py-3 text-sm leading-6 text-cyan-100/90">
+            Les 3 projets coches comme mis en avant avec l ordre le plus faible
+            apparaissent sur la landing page. Tous les autres restent visibles
+            sur la page /projects.
           </p>
         </div>
 
@@ -183,11 +188,12 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
               />
             </Field>
             <Field
-              label="Lien demo"
+              label="Lien projet"
               error={form.formState.errors.demoUrl?.message}
             >
               <input
                 className={adminFieldClassName()}
+                placeholder="Expo, APK, store ou page projet"
                 {...form.register("demoUrl")}
               />
             </Field>

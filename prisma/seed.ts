@@ -1,7 +1,8 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/generated/prisma/client";
-import { portfolioSeed } from "@/data/portfolio";
+import { portfolioEditorialSeed } from "@/data/portfolio-editorial-seed";
+import { portfolioContent } from "@/data/portfolio";
 import { hashPassword } from "@/lib/password";
 
 const connectionString =
@@ -25,23 +26,23 @@ async function main() {
   const profile = await prisma.portfolioProfile.upsert({
     where: { id: "portfolio-profile" },
     update: {
-      name: portfolioSeed.profile.name,
-      role: portfolioSeed.profile.role,
-      location: portfolioSeed.profile.location,
-      intro: portfolioSeed.profile.intro,
-      availability: portfolioSeed.profile.availability,
-      yearsOfExperience: portfolioSeed.profile.yearsOfExperience,
-      focusAreas: portfolioSeed.profile.focusAreas,
+      name: portfolioContent.profile.name,
+      role: portfolioContent.profile.role,
+      location: portfolioContent.profile.location,
+      intro: portfolioContent.profile.intro,
+      availability: portfolioContent.profile.availability,
+      yearsOfExperience: portfolioContent.profile.yearsOfExperience,
+      focusAreas: portfolioContent.profile.focusAreas,
     },
     create: {
       id: "portfolio-profile",
-      name: portfolioSeed.profile.name,
-      role: portfolioSeed.profile.role,
-      location: portfolioSeed.profile.location,
-      intro: portfolioSeed.profile.intro,
-      availability: portfolioSeed.profile.availability,
-      yearsOfExperience: portfolioSeed.profile.yearsOfExperience,
-      focusAreas: portfolioSeed.profile.focusAreas,
+      name: portfolioContent.profile.name,
+      role: portfolioContent.profile.role,
+      location: portfolioContent.profile.location,
+      intro: portfolioContent.profile.intro,
+      availability: portfolioContent.profile.availability,
+      yearsOfExperience: portfolioContent.profile.yearsOfExperience,
+      focusAreas: portfolioContent.profile.focusAreas,
     },
   });
 
@@ -67,7 +68,7 @@ async function main() {
   await prisma.asset.deleteMany();
 
   await prisma.socialLink.createMany({
-    data: portfolioSeed.socialLinks.map((link, index) => ({
+    data: portfolioContent.socialLinks.map((link, index) => ({
       label: link.label,
       href: link.href,
       sortOrder: index,
@@ -76,7 +77,7 @@ async function main() {
   });
 
   await prisma.highlight.createMany({
-    data: portfolioSeed.highlights.map((highlight, index) => ({
+    data: portfolioContent.highlights.map((highlight, index) => ({
       label: highlight.label,
       value: highlight.value,
       detail: highlight.detail,
@@ -86,7 +87,7 @@ async function main() {
   });
 
   await prisma.project.createMany({
-    data: portfolioSeed.projects.map((project, index) => ({
+    data: portfolioEditorialSeed.projects.map((project, index) => ({
       slug: project.slug,
       title: project.title,
       summary: project.summary,
@@ -96,14 +97,14 @@ async function main() {
       tags: project.tags,
       imageUrl: null,
       githubUrl: project.links.github,
-      demoUrl: project.links.demo,
+      demoUrl: project.links.demo ?? "",
       videoUrl: project.links.video,
       sortOrder: index,
     })),
   });
 
   await prisma.experience.createMany({
-    data: portfolioSeed.experiences.map((experience, index) => ({
+    data: portfolioEditorialSeed.experiences.map((experience, index) => ({
       company: experience.company,
       role: experience.role,
       period: experience.period,
@@ -135,3 +136,4 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+

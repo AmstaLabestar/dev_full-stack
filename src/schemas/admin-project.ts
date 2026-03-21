@@ -1,5 +1,14 @@
 ﻿import { z } from "zod";
 
+const optionalUrlSchema = z
+  .string()
+  .trim()
+  .optional()
+  .transform((value) => (value && value.length > 0 ? value : undefined))
+  .refine((value) => !value || z.url().safeParse(value).success, {
+    message: "Veuillez saisir une URL valide.",
+  });
+
 export const projectCategoryValues = ["web", "mobile", "ai"] as const;
 
 export const projectFormSchema = z.object({
@@ -16,12 +25,13 @@ export const projectFormSchema = z.object({
   tags: z.string().trim().min(2).max(200),
   summary: z.string().trim().min(20).max(1200),
   githubUrl: z.url(),
-  demoUrl: z.url(),
+  demoUrl: optionalUrlSchema,
   sortOrder: z.coerce.number().int().min(0).max(999),
 });
 
 export const projectMutationSchema = projectFormSchema.transform((input) => ({
   ...input,
+  demoUrl: input.demoUrl ?? "",
   tags: input.tags
     .split(",")
     .map((tag) => tag.trim())

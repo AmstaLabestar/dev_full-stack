@@ -1,8 +1,12 @@
-import { z } from "zod";
+﻿import { z } from "zod";
+
+const assetUrlSchema = z.string().refine((value) => {
+  return value.startsWith("/") || z.url().safeParse(value).success;
+}, "Invalid URL");
 
 const projectLinkSchema = z.object({
   github: z.url(),
-  demo: z.url(),
+  demo: z.url().optional(),
   video: z.url().optional(),
 });
 
@@ -15,6 +19,7 @@ const projectSchema = z.object({
   featured: z.boolean(),
   tags: z.array(z.string().min(1)).min(1),
   metrics: z.array(z.string().min(2)).min(2),
+  imageUrl: assetUrlSchema.optional(),
   links: projectLinkSchema,
 });
 
@@ -62,6 +67,7 @@ export const portfolioSchema = z.object({
     availability: z.string().min(2),
     yearsOfExperience: z.number().int().min(0),
     focusAreas: z.array(z.string().min(2)).min(3),
+    profileImageUrl: assetUrlSchema.optional(),
   }),
   socialLinks: z.array(socialLinkSchema).min(2),
   highlights: z.array(highlightSchema).min(3),

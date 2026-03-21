@@ -1,4 +1,4 @@
-import { AssetType } from "@/generated/prisma/client";
+﻿import { AssetType } from "@/generated/prisma/client";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import { PrismaAdminRepository } from "@/repositories/admin.prisma-repository";
 import type {
@@ -18,6 +18,17 @@ export class AdminService {
 
   async getOverview() {
     return this.repository.getOverview();
+  }
+
+  async getProfile() {
+    return this.repository.getProfile();
+  }
+
+  async replaceCurrentProfileImage(
+    profileId: string,
+    input: AssetMutationInput,
+  ) {
+    return this.repository.replaceCurrentProfileImage(profileId, input);
   }
 
   async listProjects() {

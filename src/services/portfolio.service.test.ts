@@ -3,7 +3,7 @@ import { PortfolioService } from "@/services/portfolio.service";
 import { describe, expect, it } from "vitest";
 
 describe("PortfolioService", () => {
-  it("returns featured projects sorted by year descending", async () => {
+  it("returns featured projects in editorial order and limits the landing selection", async () => {
     const repository: PortfolioRepository = {
       getPortfolio: async () => ({
         profile: {
@@ -39,18 +39,19 @@ describe("PortfolioService", () => {
         ],
         projects: [
           {
-            slug: "legacy",
-            title: "Legacy",
+            slug: "copilot",
+            title: "Copilot",
             summary:
-              "Migration d'une plateforme ancienne vers une stack moderne avec forte exigence de fiabilite.",
-            category: "web",
-            year: 2022,
+              "Copilote IA metier avec orchestration, supervision et validation humaine en production.",
+            category: "ai",
+            year: 2026,
             featured: true,
-            tags: ["Migration"],
-            metrics: ["Stabilite", "Migration"],
+            tags: ["AI"],
+            metrics: ["RAG", "Support"],
+            imageUrl: "/uploads/images/copilot.jpg",
             links: {
-              github: "https://github.com/hamza/legacy",
-              demo: "https://demo.example.com/legacy",
+              github: "https://github.com/hamza/copilot",
+              demo: "https://demo.example.com/copilot",
             },
           },
           {
@@ -63,24 +64,42 @@ describe("PortfolioService", () => {
             featured: true,
             tags: ["Offline"],
             metrics: ["Offline", "Terrain"],
+            imageUrl: "/uploads/images/mobile.jpg",
             links: {
               github: "https://github.com/hamza/mobile",
               demo: "https://demo.example.com/mobile",
             },
           },
           {
-            slug: "copilot",
-            title: "Copilot",
+            slug: "legacy",
+            title: "Legacy",
             summary:
-              "Copilote IA metier avec orchestration, supervision et validation humaine en production.",
-            category: "ai",
-            year: 2026,
+              "Migration d'une plateforme ancienne vers une stack moderne avec forte exigence de fiabilite.",
+            category: "web",
+            year: 2022,
             featured: true,
-            tags: ["AI"],
-            metrics: ["RAG", "Support"],
+            tags: ["Migration"],
+            metrics: ["Stabilite", "Migration"],
+            imageUrl: "/uploads/images/legacy.jpg",
             links: {
-              github: "https://github.com/hamza/copilot",
-              demo: "https://demo.example.com/copilot",
+              github: "https://github.com/hamza/legacy",
+              demo: "https://demo.example.com/legacy",
+            },
+          },
+          {
+            slug: "tailorpro",
+            title: "TailorPro",
+            summary:
+              "Application mobile metier avec catalogue, commandes et suivi client pour ateliers de couture.",
+            category: "mobile",
+            year: 2025,
+            featured: true,
+            tags: ["React Native"],
+            metrics: ["Atelier", "Operations"],
+            imageUrl: "/uploads/images/tailorpro.jpg",
+            links: {
+              github: "https://github.com/hamza/tailorpro",
+              demo: "https://expo.dev/accounts/hamza/projects/tailorpro",
             },
           },
           {
@@ -93,6 +112,7 @@ describe("PortfolioService", () => {
             featured: false,
             tags: ["Back-office"],
             metrics: ["Ops", "KPIs"],
+            imageUrl: "/uploads/images/internal.jpg",
             links: {
               github: "https://github.com/hamza/internal",
               demo: "https://demo.example.com/internal",
@@ -174,6 +194,7 @@ describe("PortfolioService", () => {
       "mobile",
       "legacy",
     ]);
+    expect(result.featuredProjects[0]?.imageUrl).toBe("/uploads/images/copilot.jpg");
     expect(result.experiences).toHaveLength(2);
     expect(result.skillGroups).toHaveLength(3);
     expect(result.services).toHaveLength(3);
@@ -181,5 +202,56 @@ describe("PortfolioService", () => {
     expect(result.profile.availability).toContain("Architecture");
     expect(result.profile.availability).toContain("Product");
     expect(result.profile.availability).toContain("Delivery");
+  });
+
+  it("returns all projects for the dedicated projects page", async () => {
+    const repository: PortfolioRepository = {
+      getPortfolio: async () => ({
+        profile: {
+          name: "Hamza",
+          role: "Senior Full-Stack Developer",
+          location: "Paris",
+          intro: "Intro",
+          availability: "Disponible",
+          yearsOfExperience: 8,
+          focusAreas: ["Architecture"],
+        },
+        socialLinks: [],
+        highlights: [],
+        projects: [
+          {
+            slug: "a",
+            title: "A",
+            summary: "Projet A suffisamment detaille pour le schema de test.",
+            category: "web",
+            year: 2024,
+            featured: true,
+            tags: ["Next.js"],
+            metrics: ["M1", "M2"],
+            links: { github: "https://github.com/hamza/a" },
+          },
+          {
+            slug: "b",
+            title: "B",
+            summary: "Projet B suffisamment detaille pour le schema de test.",
+            category: "mobile",
+            year: 2025,
+            featured: false,
+            tags: ["Expo"],
+            metrics: ["M1", "M2"],
+            links: { github: "https://github.com/hamza/b" },
+          },
+        ],
+        experiences: [],
+        skillGroups: [],
+        services: [],
+        contactSteps: [],
+      }),
+    };
+
+    const service = new PortfolioService(repository);
+    const result = await service.getProjectsPageData();
+
+    expect(result.projects.map((project) => project.slug)).toEqual(["a", "b"]);
   });
 });

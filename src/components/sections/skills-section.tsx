@@ -21,11 +21,11 @@ export function SkillsSection({ skillGroups }: SkillsSectionProps) {
         <div className="grid gap-6 lg:grid-cols-3">
           {skillGroups.map((group, index) => (
             <Reveal key={group.title} delay={index * 0.08}>
-              <Card className="h-full bg-white/6">
+              <Card className="h-full border-slate-200/85 bg-white/82 dark:border-white/10 dark:bg-white/6">
                 <CardContent className="space-y-5 p-8">
                   <div className="space-y-3">
                     <Badge variant="secondary">{group.title}</Badge>
-                    <h3 className="font-display text-2xl font-semibold text-white">
+                    <h3 className="font-display text-2xl font-semibold text-slate-950 dark:text-white">
                       {group.title}
                     </h3>
                   </div>

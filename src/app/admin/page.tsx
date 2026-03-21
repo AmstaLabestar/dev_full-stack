@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
@@ -10,6 +10,12 @@ import { cn } from "@/lib/utils";
 import { adminService } from "@/services/admin.service";
 
 const adminModules = [
+  {
+    href: "/admin/profile",
+    title: "Profil",
+    description:
+      "Mise a jour de la photo de profil affichee sur la landing page publique.",
+  },
   {
     href: "/admin/projects",
     title: "Projets",
@@ -26,7 +32,7 @@ const adminModules = [
     href: "/admin/cv",
     title: "CV",
     description:
-      "Suivi du CV actif et preparation de l'upload pour l'etape suivante.",
+      "Gestion du CV actif et de son historique de versions.",
   },
 ] as const;
 
@@ -59,17 +65,13 @@ export default async function AdminDashboardPage() {
           tone="accent"
         />
         <AdminStatCard
-          label="CV actif"
-          value={overview.currentCv ? overview.currentCv.fileName : "Aucun"}
-          hint={
-            overview.currentCv
-              ? `Mis a jour le ${overview.currentCv.updatedAt.toLocaleDateString("fr-FR")}.`
-              : "Le module upload sera branche a l'etape suivante."
-          }
+          label="Photo profil"
+          value={overview.hasProfileImage ? "Active" : "Aucune"}
+          hint="Image affichee dans le hero public."
         />
       </section>
 
-      <section className="grid gap-4 lg:grid-cols-3">
+      <section className="grid gap-4 lg:grid-cols-4">
         {adminModules.map((module) => (
           <Card key={module.href} className="bg-white/6">
             <CardContent className="space-y-4 p-6">

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 
 import { ContactProcessSection } from "@/components/sections/contact-process-section";
 import { ExperiencePreviewSection } from "@/components/sections/experience-preview-section";
@@ -44,18 +43,18 @@ export const metadata: Metadata = {
 export default async function Home() {
   const landingPageData = await portfolioService.getLandingPageData();
   const structuredData = [buildPersonJsonLd(), buildWebsiteJsonLd()];
+  const structuredDataJson = JSON.stringify(structuredData).replace(/</g, "\\u003c");
 
   return (
     <>
-      <Script
+      <script
         id="portfolio-structured-data"
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
+          __html: structuredDataJson,
         }}
       />
-      <main className="min-h-screen bg-transparent text-slate-50">
+      <main className="min-h-screen bg-transparent text-slate-900 dark:text-slate-50">
         <HeroSection
           profile={landingPageData.profile}
           socialLinks={landingPageData.socialLinks}
@@ -66,6 +65,19 @@ export default async function Home() {
           </Container>
         </section>
         <FeaturedProjectsSection projects={landingPageData.featuredProjects} />
+        <section className="pb-8">
+          <Container className="flex justify-center sm:justify-end">
+            <a
+              href="/projects"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "h-12 rounded-full px-6",
+              )}
+            >
+              Voir tous les projets
+            </a>
+          </Container>
+        </section>
         <ServicesSection services={landingPageData.services} />
         <SkillsSection skillGroups={landingPageData.skillGroups} />
         <ExperiencePreviewSection experiences={landingPageData.experiences} />

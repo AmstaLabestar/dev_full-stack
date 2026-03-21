@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import {
   BriefcaseBusiness,
   FolderKanban,
   FileText,
+  UserRound,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -24,6 +25,11 @@ const navigation: NavItem[] = [
     label: "Vue d'ensemble",
     icon: LayoutDashboard,
     exact: true,
+  },
+  {
+    href: "/admin/profile",
+    label: "Profil",
+    icon: UserRound,
   },
   {
     href: "/admin/projects",
@@ -46,7 +52,7 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="grid gap-2 md:grid-cols-4">
+    <nav className="grid gap-2 md:grid-cols-5">
       {navigation.map((item) => {
         const isActive = item.exact
           ? pathname === item.href

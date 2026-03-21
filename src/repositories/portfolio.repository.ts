@@ -1,4 +1,5 @@
-import { portfolioSeed } from "@/data/portfolio";
+﻿import { portfolioContent } from "@/data/portfolio";
+import { portfolioEditorialSeed } from "@/data/portfolio-editorial-seed";
 import { portfolioSchema } from "@/schemas/portfolio";
 import type { Portfolio } from "@/types/portfolio";
 
@@ -8,6 +9,9 @@ export interface PortfolioRepository {
 
 export class InMemoryPortfolioRepository implements PortfolioRepository {
   async getPortfolio(): Promise<Portfolio> {
-    return portfolioSchema.parse(portfolioSeed);
+    return portfolioSchema.parse({
+      ...portfolioContent,
+      ...portfolioEditorialSeed,
+    });
   }
 }

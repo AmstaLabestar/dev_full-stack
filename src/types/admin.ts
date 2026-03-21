@@ -1,9 +1,4 @@
-import type {
-  Asset,
-  AssetType,
-  Experience,
-  Project,
-} from "@/generated/prisma/client";
+﻿import type { Asset, AssetType, Experience, Project } from "@/generated/prisma/client";
 
 export type AdminOverview = {
   projectCount: number;
@@ -13,6 +8,15 @@ export type AdminOverview = {
     Asset,
     "id" | "title" | "fileName" | "url" | "updatedAt"
   > | null;
+  hasProfileImage: boolean;
+};
+
+export type AdminProfileRecord = {
+  id: string;
+  name: string;
+  role: string;
+  profileImageUrl?: string;
+  updatedAt: Date;
 };
 
 export type AdminProjectRecord = Pick<

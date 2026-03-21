@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+﻿import { prisma } from "@/lib/prisma";
 import { mapPortfolioSnapshotToDomain } from "@/repositories/portfolio.mapper";
 import type { PortfolioRepository } from "@/repositories/portfolio.repository";
 import type { Portfolio } from "@/types/portfolio";
@@ -19,12 +19,22 @@ export class PrismaPortfolioRepository implements PortfolioRepository {
       throw new Error("Portfolio profile not found in database.");
     }
 
-    const [projects, experiences] = await Promise.all([
+    const [projects, experiences, currentProfileImage] = await Promise.all([
       prisma.project.findMany({
         orderBy: [{ sortOrder: "asc" }, { year: "desc" }],
       }),
       prisma.experience.findMany({
         orderBy: { sortOrder: "asc" },
+      }),
+      prisma.asset.findFirst({
+        where: {
+          type: "image",
+          projectId: null,
+          isCurrent: true,
+        },
+        orderBy: {
+          updatedAt: "desc",
+        },
       }),
     ]);
 
@@ -32,6 +42,7 @@ export class PrismaPortfolioRepository implements PortfolioRepository {
       profile,
       projects,
       experiences,
+      profileImageUrl: currentProfileImage?.url,
     });
   }
 }

@@ -2,6 +2,8 @@ import type { z } from "zod";
 import type { portfolioSchema } from "@/schemas/portfolio";
 
 export type Portfolio = z.infer<typeof portfolioSchema>;
+export type PortfolioStaticContent = Omit<Portfolio, "projects" | "experiences">;
+export type PortfolioEditorialContent = Pick<Portfolio, "projects" | "experiences">;
 export type PortfolioProject = Portfolio["projects"][number];
 export type PortfolioExperience = Portfolio["experiences"][number];
 export type PortfolioHighlight = Portfolio["highlights"][number];
@@ -18,4 +20,8 @@ export type LandingPageData = {
   skillGroups: Portfolio["skillGroups"];
   services: Portfolio["services"];
   contactSteps: Portfolio["contactSteps"];
+};
+
+export type ProjectsPageData = {
+  projects: Portfolio["projects"];
 };
