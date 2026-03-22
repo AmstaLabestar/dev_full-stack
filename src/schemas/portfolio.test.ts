@@ -57,6 +57,7 @@ const validPayload = {
       links: {
         github: "https://github.com/hamza/app-mobile",
         demo: "https://demo.example.com/app-mobile",
+        video: "/uploads/videos/app-mobile-demo.mp4",
       },
     },
     {
@@ -150,5 +151,26 @@ describe("portfolioSchema", () => {
     };
 
     expect(portfolioSchema.safeParse(invalidPayload).success).toBe(false);
+  });
+
+  it("accepts uploaded asset paths for project videos", () => {
+    const payloadWithUploadedVideo = {
+      ...validPayload,
+      projects: validPayload.projects.map((project, index) =>
+        index === 1
+          ? {
+              ...project,
+              links: {
+                ...project.links,
+                video: "/uploads/videos/mobile-demo.mp4",
+              },
+            }
+          : project,
+      ),
+    };
+
+    expect(portfolioSchema.safeParse(payloadWithUploadedVideo).success).toBe(
+      true,
+    );
   });
 });

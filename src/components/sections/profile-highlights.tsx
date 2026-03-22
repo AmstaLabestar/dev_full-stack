@@ -12,11 +12,12 @@ export function ProfileHighlights({ highlights }: ProfileHighlightsProps) {
       {highlights.map((highlight, index) => (
         <Card
           key={`${highlight.label}-${highlight.value}-${index}`}
-          className="border-slate-200/80 bg-white/82 dark:border-white/10 dark:bg-white/6"
+          className="group relative overflow-hidden border-slate-200/80 bg-white/86 dark:border-white/10 dark:bg-white/6"
         >
-          <CardContent>
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-sky-400 to-teal-300 opacity-80 dark:opacity-100" />
+          <CardContent className="p-6">
             <Badge variant="secondary">{highlight.label}</Badge>
-            <p className="font-display mt-4 text-4xl font-semibold text-slate-950 dark:text-white">
+            <p className="font-display mt-5 text-4xl font-semibold tracking-tight text-slate-950 dark:text-white">
               {highlight.value}
             </p>
             <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">

@@ -23,7 +23,7 @@ export function FeaturedProjectsSection({
         <SectionHeading
           eyebrow="Projets choisis"
           title="Produits web, mobile et IA penses pour la production."
-          description="Chaque projet presente ici illustre une logique d execution complete : architecture, experience utilisateur, performance et delivery."
+          description="Des projets selectionnes pour illustrer une approche orientee produit, execution technique et impact concret."
           className="mb-10"
         />
         <div className="grid gap-6 xl:grid-cols-3">

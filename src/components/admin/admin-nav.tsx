@@ -1,12 +1,12 @@
-﻿"use client";
+"use client";
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
   BriefcaseBusiness,
-  FolderKanban,
   FileText,
+  FolderKanban,
+  LayoutDashboard,
   UserRound,
 } from "lucide-react";
 
@@ -64,13 +64,22 @@ export function AdminNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-3xl border px-4 py-3 text-sm font-medium transition",
+              "group flex items-center gap-3 rounded-3xl border px-4 py-3 text-sm font-medium transition",
               isActive
-                ? "border-cyan-300/40 bg-cyan-400/10 text-white"
-                : "border-white/10 bg-white/4 text-slate-300 hover:border-white/20 hover:text-white",
+                ? "border-cyan-300/35 bg-cyan-400/12 text-white shadow-[0_18px_40px_rgba(34,211,238,0.12)]"
+                : "border-white/10 bg-white/4 text-slate-300 hover:border-white/20 hover:bg-white/7 hover:text-white",
             )}
           >
-            <Icon className="size-4" />
+            <span
+              className={cn(
+                "flex size-9 items-center justify-center rounded-2xl border transition",
+                isActive
+                  ? "border-cyan-300/25 bg-cyan-400/12 text-cyan-100"
+                  : "border-white/8 bg-slate-950/35 text-slate-400 group-hover:text-slate-100",
+              )}
+            >
+              <Icon className="size-4" />
+            </span>
             {item.label}
           </Link>
         );

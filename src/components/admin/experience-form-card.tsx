@@ -62,17 +62,20 @@ export function ExperienceFormCard({
   });
 
   return (
-    <Card className="bg-white/6">
+    <Card className="border-white/10 bg-white/6">
       <CardContent className="space-y-6 p-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <h2 className="font-display text-2xl font-semibold text-white">
             {mode === "create"
               ? "Nouvelle experience"
               : "Modifier l'experience"}
           </h2>
           <p className="text-sm leading-6 text-slate-400">
-            Structure le parcours professionnel affiche dans le portfolio
-            public.
+            Structure le parcours professionnel affiche dans le portfolio public.
+          </p>
+          <p className="rounded-2xl border border-cyan-300/15 bg-cyan-400/8 px-4 py-3 text-sm leading-6 text-cyan-100/90">
+            L ordre le plus faible passe en premier dans la section experience du
+            portfolio public.
           </p>
         </div>
 

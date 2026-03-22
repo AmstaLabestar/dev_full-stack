@@ -89,10 +89,10 @@ export function ThemeToggle({ initialTheme }: ThemeToggleProps) {
         applyTheme(updatedTheme);
       }}
       className={cn(
-        "fixed top-5 right-5 z-50 inline-flex h-12 items-center gap-2 rounded-full border border-white/10 bg-slate-950/75 px-4 text-sm font-medium text-slate-100 shadow-[0_20px_60px_rgba(2,8,23,0.32)] backdrop-blur-xl transition hover:border-cyan-300/30 hover:text-white",
+        "fixed top-4 right-4 z-50 inline-flex h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium shadow-[0_20px_60px_rgba(2,8,23,0.18)] backdrop-blur-xl transition hover:-translate-y-0.5 sm:top-5 sm:right-5 sm:h-12",
         theme === "light"
-          ? "border-slate-300/70 bg-white/90 text-slate-900 hover:border-slate-400"
-          : null,
+          ? "border-slate-300/85 bg-white/92 text-slate-900 hover:border-slate-400 hover:bg-white"
+          : "border-white/10 bg-slate-950/75 text-slate-100 hover:border-cyan-300/30 hover:text-white",
       )}
     >
       {theme === "dark" ? (

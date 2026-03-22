@@ -1,4 +1,4 @@
-﻿import type { PortfolioEditorialContent } from "@/types/portfolio";
+import type { PortfolioEditorialContent } from "@/types/portfolio";
 
 export const portfolioEditorialSeed: PortfolioEditorialContent = {
   projects: [
@@ -6,15 +6,15 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       slug: "smartcard",
       title: "SmartCard - Carte de reduction intelligente",
       summary:
-        "Plateforme web qui permet aux consommateurs d'acheter des cartes de reduction digitales associees a des campagnes d'influence. Elle connecte les utilisateurs, les influenceurs et les commercants locaux afin d'offrir des remises exclusives et tracables sur des produits et services du quotidien.",
+        "Plateforme web qui permet aux consommateurs d acheter des cartes de reduction digitales associees a des campagnes d influence. Le produit connecte utilisateurs, influenceurs et commercants locaux afin de distribuer des offres exclusives, mesurables et simples a activer.",
       category: "web",
       year: 2025,
       featured: true,
       tags: ["Next.js", "TypeScript", "PostgreSQL", "API REST", "Observability"],
       metrics: [
-        "Reduction du temps de traitement des campagnes",
+        "Traitement des campagnes plus fluide",
         "Disponibilite ciblee a 99,95%",
-        "Meilleure tracabilite des remises et usages",
+        "Suivi plus clair des remises et des usages",
       ],
       links: {
         github: "https://github.com/AmstaLabestar/fidelity_card",
@@ -25,15 +25,15 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       slug: "localfood",
       title: "LocalFood - Marketplace de cuisine locale",
       summary:
-        "Application mobile permettant aux cuisiniers locaux et particuliers de proposer leurs plats faits maison a proximite, avec decouverte geolocalisee, commande simplifiee et experience orientee usage local.",
+        "Application mobile permettant aux cuisiniers locaux et particuliers de proposer leurs plats a proximite, avec decouverte geolocalisee, commande simplifiee et experience concue pour des usages du quotidien.",
       category: "mobile",
       year: 2025,
       featured: true,
       tags: ["React Native", "Offline First", "Geolocation", "Push Notifications"],
       metrics: [
-        "Acces rapide a des repas locaux a proximite",
+        "Acces plus rapide a des repas locaux",
         "Synchronisation offline pour les usages terrain",
-        "Reduction du temps de recherche de repas disponibles",
+        "Temps de recherche reduit pour les plats disponibles",
       ],
       links: {
         github: "https://github.com/AmstaLabestar/Mobile-myMeal",
@@ -44,15 +44,15 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       slug: "tailorpro",
       title: "TailorPro - Gestion intelligente pour couturiers",
       summary:
-        "Application mobile offline-first permettant aux couturiers locaux de gerer leurs commandes, les mesures clients, les paiements et le suivi de livraison, avec une UX adaptee aux contraintes terrain.",
+        "Application mobile offline-first permettant aux couturiers locaux de gerer leurs commandes, les mesures clients, les paiements et le suivi de livraison, avec une interface adaptee aux contraintes terrain.",
       category: "mobile",
       year: 2024,
       featured: true,
       tags: ["React Native", "Offline First", "Local Storage", "UX Research"],
       metrics: [
-        "Reduction des erreurs de mesure et de suivi",
+        "Moins d erreurs sur les mesures et le suivi",
         "Adoption par des ateliers locaux",
-        "Usage continu apres phase de test terrain",
+        "Usage continu apres les premiers tests terrain",
       ],
       links: {
         github: "https://github.com/AmstaLabestar/tailor_managments",
@@ -69,9 +69,9 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       featured: true,
       tags: ["Next.js", "PWA", "Geolocation", "API REST", "Offline Support"],
       metrics: [
-        "Reduction du temps de recherche d'un artisan qualifie",
-        "Visibilite accrue pour les artisans locaux",
-        "Acces mobile rapide aux services essentiels",
+        "Recherche d artisans plus rapide",
+        "Visibilite accrue pour les professionnels locaux",
+        "Acces mobile fluide aux services essentiels",
       ],
       links: {
         github: "https://github.com/AmstaLabestar/contact_artisan",
@@ -85,7 +85,7 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       role: "Developpeur web et mobile",
       period: "2023 - Aujourd'hui",
       summary:
-        "Conception et developpement d'applications web et mobiles pour des besoins metier locaux, avec une attention particuliere sur l'impact produit, la fiabilite et l'experience utilisateur.",
+        "Conception et developpement d applications web et mobiles pour des besoins metier locaux, avec une attention particuliere sur l impact produit, la fiabilite et l experience utilisateur.",
       achievements: [
         "Livraison de produits adaptes a des usages terrain concrets.",
         "Mise en place de bases techniques reutilisables sur plusieurs projets.",
@@ -96,7 +96,7 @@ export const portfolioEditorialSeed: PortfolioEditorialContent = {
       role: "Consultant full-stack",
       period: "2018 - 2023",
       summary:
-        "Accompagnement de projets web, mobile et metier sur la conception, le developpement et l'industrialisation, avec un fort focus sur la maintenabilite et la vitesse de livraison.",
+        "Accompagnement de projets web, mobile et metier sur la conception, le developpement et l industrialisation, avec un fort focus sur la maintenabilite et la vitesse de livraison.",
       achievements: [
         "Conception de solutions adaptees au contexte local et aux contraintes reelles.",
         "Structuration de workflows de livraison plus fiables et plus simples a maintenir.",

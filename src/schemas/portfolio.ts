@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 
 const assetUrlSchema = z.string().refine((value) => {
   return value.startsWith("/") || z.url().safeParse(value).success;
@@ -7,7 +7,7 @@ const assetUrlSchema = z.string().refine((value) => {
 const projectLinkSchema = z.object({
   github: z.url(),
   demo: z.url().optional(),
-  video: z.url().optional(),
+  video: assetUrlSchema.optional(),
 });
 
 const projectSchema = z.object({

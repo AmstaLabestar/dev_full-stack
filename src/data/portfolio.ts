@@ -1,4 +1,4 @@
-﻿import type { PortfolioStaticContent } from "@/types/portfolio";
+import type { PortfolioStaticContent } from "@/types/portfolio";
 
 export const portfolioContent: PortfolioStaticContent = {
   profile: {
@@ -6,8 +6,8 @@ export const portfolioContent: PortfolioStaticContent = {
     role: "Developpeur Full-Stack",
     location: "Ouagadougou, Burkina Faso",
     intro:
-      "Je conçois des produits web et mobiles robustes, du design system jusqu'aux workflows DevOps, avec une exigence forte sur la performance, la maintenabilité et l'expérience utilisateur.",
-    availability: "Disponible pour des missions a fort impact",
+      "Je conçois des produits web et mobiles robustes, de l architecture applicative jusqu a la mise en production, avec une exigence constante sur la performance, la maintenabilite et l experience utilisateur.",
+    availability: "Disponible pour des missions produit a fort enjeu",
     yearsOfExperience: 3,
     focusAreas: [
       "Architecture logicielle",
@@ -33,12 +33,12 @@ export const portfolioContent: PortfolioStaticContent = {
     {
       label: "Experience",
       value: "3+ ans",
-      detail: "Conception, livraison et maintenance de produits numeriques utiles et durables.",
+      detail: "Conception, livraison et evolution de produits numeriques concus pour des usages reels.",
     },
     {
-      label: "Projets lances",
+      label: "Projets livres",
       value: "10+",
-      detail: "Applications web, mobile, outils metier et plateformes orientees terrain.",
+      detail: "Applications web, mobile, outils metier et plateformes pensees pour des environnements concrets.",
     },
     {
       label: "Stack",
@@ -65,19 +65,19 @@ export const portfolioContent: PortfolioStaticContent = {
       title: "Architecture produit",
       description:
         "Je structure des applications maintenables avec une separation claire entre domaine, interface, acces aux donnees et workflows de livraison.",
-      outcomes: ["Codebase plus lisible", "Evolutivite mieux maitrisee"],
+      outcomes: ["Codebase plus lisible", "Evolution technique mieux maitrisee"],
     },
     {
       title: "Delivery full-stack",
       description:
-        "Je prends en charge le front, le back et la mise en production avec une attention constante a la qualite, a la rapidite de livraison et a la robustesse.",
-      outcomes: ["Time-to-market reduit", "Moins de dette technique"],
+        "Je prends en charge le front, le back et la mise en production avec une attention constante a la qualite, a la vitesse de livraison et a la robustesse.",
+      outcomes: ["Delais mieux tenus", "Moins de dette technique"],
     },
     {
       title: "Modernisation et optimisation",
       description:
-        "Je reprends des produits existants pour ameliorer la performance, la clarte de l'experience utilisateur et la stabilite operationnelle.",
-      outcomes: ["UX plus fluide", "Cycles de release plus stables"],
+        "Je reprends des produits existants pour ameliorer la performance, la clarte de l experience utilisateur et la stabilite operationnelle.",
+      outcomes: ["Experience plus fluide", "Cycles de release plus stables"],
     },
   ],
   contactSteps: [
@@ -87,7 +87,7 @@ export const portfolioContent: PortfolioStaticContent = {
         "Un premier echange pour comprendre le contexte, les contraintes et le vrai besoin produit.",
     },
     {
-      title: "Plan d'execution",
+      title: "Plan d execution",
       detail:
         "Une proposition claire avec priorites, architecture cible et decoupage pragmatique.",
     },

@@ -70,9 +70,9 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
   const label = mode === "create" ? "Nouveau projet" : "Modifier le projet";
 
   return (
-    <Card className="bg-white/6">
+    <Card className="border-white/10 bg-white/6">
       <CardContent className="space-y-6 p-6">
-        <div className="space-y-2">
+        <div className="space-y-3">
           <h2 className="font-display text-2xl font-semibold text-white">
             {label}
           </h2>

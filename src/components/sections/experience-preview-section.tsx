@@ -24,7 +24,7 @@ export function ExperiencePreviewSection({
               <SectionHeading
                 eyebrow="Experience"
                 title="Un parcours aligne sur les enjeux produit, execution et delivery."
-                description="Des missions construites autour de la lisibilite technique, de l'impact usage et d&apos;une mise en production propre."
+                description="Des experiences construites autour de la lisibilite technique, de l impact utilisateur et d une mise en production rigoureuse."
               />
 
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
@@ -47,7 +47,7 @@ export function ExperiencePreviewSection({
                     </p>
                   </div>
                   <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                    Priorisation pragmatique, execution nette et attention continue a l&apos;experience utilisateur.
+                    Priorisation pragmatique, execution nette et attention continue a l experience utilisateur.
                   </p>
                 </div>
               </div>

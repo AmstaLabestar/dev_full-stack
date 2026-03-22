@@ -5,6 +5,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
     optimizePackageImports: ["lucide-react"],
+    serverActions: {
+      bodySizeLimit: "30mb",
+    },
+    proxyClientMaxBodySize: "30mb",
   },
   images: {
     formats: ["image/avif", "image/webp"],

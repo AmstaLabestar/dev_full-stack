@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 import { AdminShell } from "@/components/admin/admin-shell";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
@@ -53,7 +53,7 @@ export default async function AdminDashboardPage() {
           hint="Nombre total de projets actuellement persistes."
         />
         <AdminStatCard
-          label="Featured"
+          label="Mis en avant"
           value={String(overview.featuredProjectCount)}
           hint="Cas mis en avant sur la landing page publique."
           tone="secondary"
@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
 
       <section className="grid gap-4 lg:grid-cols-4">
         {adminModules.map((module) => (
-          <Card key={module.href} className="bg-white/6">
+          <Card key={module.href} className="border-white/10 bg-white/6">
             <CardContent className="space-y-4 p-6">
               <Badge>{module.title}</Badge>
               <div className="space-y-2">
@@ -88,7 +88,7 @@ export default async function AdminDashboardPage() {
                 href={module.href}
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "h-11 rounded-full px-5",
+                  "h-11 rounded-full px-5 shadow-[0_14px_40px_rgba(34,211,238,0.12)] dark:shadow-none",
                 )}
               >
                 Ouvrir le module
