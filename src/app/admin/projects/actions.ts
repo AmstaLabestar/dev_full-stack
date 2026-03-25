@@ -1,10 +1,12 @@
-"use server";
+﻿"use server";
 
 import { revalidatePath } from "next/cache";
 import { AssetType } from "@/generated/prisma/client";
 
 import { storeUploadedFile } from "@/lib/file-storage";
+import { getUploadFileName } from "@/lib/upload-path";
 import { requireAdminSession } from "@/lib/auth-guard";
+import { uploadedBlobSchema, type UploadedBlobInput } from "@/schemas/blob-upload";
 import { validateUploadFile } from "@/schemas/upload";
 import { adminService } from "@/services/admin.service";
 import type { ProjectFormValues } from "@/schemas/admin-project";
@@ -33,6 +35,7 @@ function normalizeFieldErrors(
 
 function revalidateAdminProjectViews() {
   revalidatePath("/");
+  revalidatePath("/projects");
   revalidatePath("/admin");
   revalidatePath("/admin/projects");
 }
@@ -128,20 +131,18 @@ export async function uploadProjectAssetAction(
   }
 
   const storedFile = await storeUploadedFile(assetTypeValue, fileValue);
-  const assetType =
-    assetTypeValue === "image" ? AssetType.image : AssetType.video;
 
-  await adminService.attachProjectAsset(projectId, assetType, {
-    type: assetType,
-    title: `${projectTitle} ${assetTypeValue === "image" ? "image" : "video"}`,
-    fileName: storedFile.fileName,
-    storageKey: storedFile.storageKey,
-    mimeType: storedFile.mimeType,
-    size: storedFile.size,
-    url: storedFile.url,
+  await persistProjectAssetUpload({
+    projectId,
+    projectTitle,
+    assetType: assetTypeValue,
+    blob: {
+      pathname: storedFile.storageKey,
+      url: storedFile.url,
+      contentType: storedFile.mimeType,
+      size: storedFile.size,
+    },
   });
-
-  revalidateAdminProjectViews();
 
   return {
     status: "success",
@@ -150,6 +151,63 @@ export async function uploadProjectAssetAction(
         ? "Image du projet mise a jour."
         : "Video du projet mise a jour.",
   };
+}
+
+export async function finalizeProjectAssetUploadAction(input: {
+  projectId: string;
+  projectTitle: string;
+  assetType: "image" | "video";
+  blob: UploadedBlobInput;
+}): Promise<ProjectAssetUploadState> {
+  await requireAdminSession();
+
+  const parsedBlob = uploadedBlobSchema.safeParse(input.blob);
+
+  if (!parsedBlob.success) {
+    return {
+      status: "error",
+      message: "Le fichier televerse est invalide.",
+    };
+  }
+
+  await persistProjectAssetUpload({
+    projectId: input.projectId,
+    projectTitle: input.projectTitle,
+    assetType: input.assetType,
+    blob: parsedBlob.data,
+  });
+
+  return {
+    status: "success",
+    message:
+      input.assetType === "image"
+        ? "Image du projet mise a jour."
+        : "Video du projet mise a jour.",
+  };
+}
+
+async function persistProjectAssetUpload(input: {
+  projectId: string;
+  projectTitle: string;
+  assetType: "image" | "video";
+  blob: UploadedBlobInput;
+}) {
+  const assetType =
+    input.assetType === "image" ? AssetType.image : AssetType.video;
+
+  await adminService.attachProjectAsset(input.projectId, input.assetType, {
+    type: assetType,
+    title: `${input.projectTitle} ${
+      input.assetType === "image" ? "image" : "video"
+    }`,
+    fileName: getUploadFileName(input.blob.pathname),
+    storageKey: input.blob.pathname,
+    mimeType: input.blob.contentType,
+    size: input.blob.size,
+    url: input.blob.url,
+  });
+
+  revalidateAdminProjectViews();
 }
 
 export async function deleteProjectAction(id: string): Promise<void> {

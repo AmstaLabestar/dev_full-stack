@@ -69,8 +69,8 @@ npm run prisma:studio
 - navigation dediee vers les modules metier
 - CRUD projets avec React Hook Form + Zod + server actions
 - CRUD experiences avec React Hook Form + Zod + server actions
-- upload local de CV PDF avec activation automatique de la version courante
-- upload image et video pour les projets avec stockage dans `public/uploads`
+- upload de CV PDF avec activation automatique de la version courante, en local ou via Vercel Blob
+- upload image et video pour les projets avec fallback local et stockage durable via Vercel Blob en production
 - historique des assets CV en base Prisma
 
 ## SEO et perf
@@ -114,7 +114,8 @@ npm run prisma:studio
 2. Selectionner `main` comme branche de production.
 3. Ajouter les variables d environnement ci-dessus dans Vercel.
 4. Lancer `npm run prisma:migrate:deploy` sur la base cible avant ou au moment du premier deploiement.
-5. Verifier le login admin, les uploads et les routes SEO apres le premier deploy.
+5. Ajouter `BLOB_READ_WRITE_TOKEN` pour activer les uploads directs vers Vercel Blob.
+6. Verifier le login admin, les uploads CV/image/video et les routes SEO apres le premier deploy.
 
 ## Stockage fichiers
 

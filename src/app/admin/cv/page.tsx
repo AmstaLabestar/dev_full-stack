@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { AssetType } from "@/generated/prisma/client";
 import { AdminShell } from "@/components/admin/admin-shell";
@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireAdminSession } from "@/lib/auth-guard";
+import { isBlobStorageEnabled } from "@/lib/blob-storage";
 import { cn } from "@/lib/utils";
 import { adminService } from "@/services/admin.service";
 
@@ -16,6 +17,7 @@ export default async function AdminCvPage() {
     adminService.getCurrentCv(),
     adminService.listAssetsByType(AssetType.cv),
   ]);
+  const blobUploadsEnabled = isBlobStorageEnabled();
 
   return (
     <AdminShell
@@ -24,7 +26,7 @@ export default async function AdminCvPage() {
       sessionLabel={session.user.email ?? "Administrateur"}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
-        <CvUploadCard />
+        <CvUploadCard blobUploadsEnabled={blobUploadsEnabled} />
 
         <Card className="bg-white/6">
           <CardContent className="space-y-5 p-6">
@@ -36,7 +38,9 @@ export default async function AdminCvPage() {
               <p className="text-sm leading-6 text-slate-400">
                 {currentCv
                   ? `Fichier ${currentCv.fileName}  mis a jour le ${currentCv.updatedAt.toLocaleDateString("fr-FR")}.`
-                  : "Aucun PDF n a encore ete televerse dans le stockage local."}
+                  : blobUploadsEnabled
+                    ? "Aucun PDF n a encore ete televerse dans Vercel Blob."
+                    : "Aucun PDF n a encore ete televerse dans le stockage local."}
               </p>
             </div>
             {currentCv ? (

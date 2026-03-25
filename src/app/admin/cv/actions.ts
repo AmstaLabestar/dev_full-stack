@@ -1,9 +1,11 @@
-"use server";
+﻿"use server";
 
 import { revalidatePath } from "next/cache";
 import { AssetType } from "@/generated/prisma/client";
 import { storeUploadedFile } from "@/lib/file-storage";
+import { getUploadFileName } from "@/lib/upload-path";
 import { requireAdminSession } from "@/lib/auth-guard";
+import { uploadedBlobSchema, type UploadedBlobInput } from "@/schemas/blob-upload";
 import { validateUploadFile } from "@/schemas/upload";
 import { adminService } from "@/services/admin.service";
 
@@ -41,22 +43,63 @@ export async function uploadCvAction(
 
   const storedFile = await storeUploadedFile("cv", fileValue);
 
-  await adminService.replaceCurrentCv({
-    type: AssetType.cv,
+  await persistCvUpload({
     title: formData.get("title")?.toString().trim() || "CV principal",
-    fileName: storedFile.fileName,
-    storageKey: storedFile.storageKey,
-    mimeType: storedFile.mimeType,
-    size: storedFile.size,
-    url: storedFile.url,
+    blob: {
+      pathname: storedFile.storageKey,
+      url: storedFile.url,
+      contentType: storedFile.mimeType,
+      size: storedFile.size,
+    },
   });
-
-  revalidatePath("/");
-  revalidatePath("/admin");
-  revalidatePath("/admin/cv");
 
   return {
     status: "success",
     message: "CV televerse et defini comme version active.",
   };
+}
+
+export async function finalizeCvUploadAction(input: {
+  title: string;
+  blob: UploadedBlobInput;
+}): Promise<CvUploadActionState> {
+  await requireAdminSession();
+
+  const parsedBlob = uploadedBlobSchema.safeParse(input.blob);
+
+  if (!parsedBlob.success) {
+    return {
+      status: "error",
+      message: "Le fichier televerse est invalide.",
+    };
+  }
+
+  await persistCvUpload({
+    title: input.title.trim() || "CV principal",
+    blob: parsedBlob.data,
+  });
+
+  return {
+    status: "success",
+    message: "CV televerse et defini comme version active.",
+  };
+}
+
+async function persistCvUpload(input: {
+  title: string;
+  blob: UploadedBlobInput;
+}) {
+  await adminService.replaceCurrentCv({
+    type: AssetType.cv,
+    title: input.title,
+    fileName: getUploadFileName(input.blob.pathname),
+    storageKey: input.blob.pathname,
+    mimeType: input.blob.contentType,
+    size: input.blob.size,
+    url: input.blob.url,
+  });
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath("/admin/cv");
 }

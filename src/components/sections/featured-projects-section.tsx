@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { Github, Globe, ImageIcon, PlayCircle } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,14 @@ import type { LandingPageData } from "@/types/portfolio";
 
 type FeaturedProjectsSectionProps = {
   projects: LandingPageData["featuredProjects"];
+};
+
+type ProjectAction = {
+  href: string;
+  label: string;
+  icon: typeof Github;
+  tone?: "default" | "primary";
+  className?: string;
 };
 
 export function FeaturedProjectsSection({
@@ -28,8 +36,11 @@ export function FeaturedProjectsSection({
         />
         <div className="grid gap-6 xl:grid-cols-3">
           {projects.map((project, index) => {
-            const hasProjectLink = Boolean(project.links.demo?.trim());
-            const hasVideoLink = Boolean(project.links.video?.trim());
+            const actions = getProjectActions(project);
+            const ctaGridClassName =
+              actions.length === 3
+                ? "grid-cols-2 sm:grid-cols-2"
+                : "grid-cols-2";
 
             return (
               <Reveal key={project.slug} delay={index * 0.08}>
@@ -102,39 +113,26 @@ export function FeaturedProjectsSection({
                     </ul>
 
                     <div className="mt-auto border-t border-slate-200/85 pt-6 dark:border-white/8">
-                      <div className="grid min-h-[7.5rem] gap-3 sm:grid-cols-2 sm:grid-rows-[minmax(0,1fr)_minmax(0,1fr)]">
-                        <ProjectLinkButton
-                          href={project.links.github}
-                          label="Code"
-                          icon={Github}
-                        />
-                        {hasProjectLink ? (
-                          <ProjectLinkButton
-                            href={project.links.demo!}
-                            label="Projet"
-                            icon={Globe}
-                            tone="primary"
-                          />
-                        ) : hasVideoLink ? (
-                          <ProjectLinkButton
-                            href={project.links.video!}
-                            label="Video"
-                            icon={PlayCircle}
-                            tone="primary"
-                          />
-                        ) : (
-                          <div className="hidden sm:block" aria-hidden="true" />
+                      <div
+                        className={cn(
+                          "grid min-h-12 gap-3",
+                          ctaGridClassName,
                         )}
-                        {hasProjectLink && hasVideoLink ? (
+                      >
+                        {actions.map((action, actionIndex) => (
                           <ProjectLinkButton
-                            href={project.links.video!}
-                            label="Video"
-                            icon={PlayCircle}
-                            className="sm:col-span-2"
+                            key={`${project.slug}-${action.label}`}
+                            href={action.href}
+                            label={action.label}
+                            icon={action.icon}
+                            tone={action.tone}
+                            className={cn(
+                              actions.length === 3 && actionIndex === 2 &&
+                                "col-span-2 sm:col-span-2",
+                              action.className,
+                            )}
                           />
-                        ) : (
-                          <div className="hidden sm:block sm:col-span-2" aria-hidden="true" />
-                        )}
+                        ))}
                       </div>
                     </div>
                   </CardContent>
@@ -146,6 +144,58 @@ export function FeaturedProjectsSection({
       </Container>
     </section>
   );
+}
+
+function getProjectActions(
+  project: LandingPageData["featuredProjects"][number],
+): ProjectAction[] {
+  const hasProjectLink = Boolean(project.links.demo?.trim());
+  const hasVideoLink = Boolean(project.links.video?.trim());
+
+  const actions: ProjectAction[] = [
+    {
+      href: project.links.github,
+      label: "Code",
+      icon: Github,
+    },
+  ];
+
+  if (project.category === "mobile" && hasVideoLink) {
+    actions.push({
+      href: project.links.video!,
+      label: "Video",
+      icon: PlayCircle,
+      tone: "primary",
+    });
+
+    return actions;
+  }
+
+  if (hasProjectLink) {
+    actions.push({
+      href: project.links.demo!,
+      label: "Projet",
+      icon: Globe,
+      tone: "primary",
+    });
+  } else if (hasVideoLink) {
+    actions.push({
+      href: project.links.video!,
+      label: "Video",
+      icon: PlayCircle,
+      tone: "primary",
+    });
+  }
+
+  if (hasProjectLink && hasVideoLink) {
+    actions.push({
+      href: project.links.video!,
+      label: "Video",
+      icon: PlayCircle,
+    });
+  }
+
+  return actions;
 }
 
 type ProjectLinkButtonProps = {

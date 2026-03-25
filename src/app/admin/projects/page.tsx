@@ -1,4 +1,4 @@
-import { deleteProjectAction } from "@/app/admin/projects/actions";
+﻿import { deleteProjectAction } from "@/app/admin/projects/actions";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ProjectAssetUploader } from "@/components/admin/project-asset-uploader";
 import { ProjectFormCard } from "@/components/admin/project-form-card";
@@ -6,11 +6,13 @@ import { RecordDeleteButton } from "@/components/admin/record-delete-button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireAdminSession } from "@/lib/auth-guard";
+import { isBlobStorageEnabled } from "@/lib/blob-storage";
 import { adminService } from "@/services/admin.service";
 
 export default async function AdminProjectsPage() {
   const session = await requireAdminSession();
   const projects = await adminService.listProjects();
+  const blobUploadsEnabled = isBlobStorageEnabled();
 
   return (
     <AdminShell
@@ -59,6 +61,7 @@ export default async function AdminProjectsPage() {
                   projectTitle={project.title}
                   imageUrl={project.imageUrl}
                   videoUrl={project.videoUrl}
+                  blobUploadsEnabled={blobUploadsEnabled}
                 />
 
                 <ProjectFormCard mode="edit" initialValues={project} />

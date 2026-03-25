@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import { useState, useTransition } from "react";
 import { ImageIcon, VideoIcon } from "lucide-react";
 
 import {
+  finalizeProjectAssetUploadAction,
   uploadProjectAssetAction,
   type ProjectAssetUploadState,
 } from "@/app/admin/projects/actions";
@@ -14,6 +15,7 @@ import { adminFieldClassName } from "@/components/admin/field-styles";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { uploadFileToBlob, getUploadErrorMessage } from "@/lib/blob-client-upload";
 import { cn } from "@/lib/utils";
 
 type ProjectAssetUploaderProps = {
@@ -21,6 +23,7 @@ type ProjectAssetUploaderProps = {
   projectTitle: string;
   imageUrl?: string | null;
   videoUrl?: string | null;
+  blobUploadsEnabled: boolean;
 };
 
 export function ProjectAssetUploader({
@@ -28,6 +31,7 @@ export function ProjectAssetUploader({
   projectTitle,
   imageUrl,
   videoUrl,
+  blobUploadsEnabled,
 }: ProjectAssetUploaderProps) {
   return (
     <section className="space-y-4 rounded-3xl border border-white/10 bg-slate-950/30 p-5">
@@ -51,6 +55,7 @@ export function ProjectAssetUploader({
           assetType="image"
           accept="image/png,image/jpeg,image/webp,image/svg+xml"
           currentUrl={imageUrl}
+          blobUploadsEnabled={blobUploadsEnabled}
         />
         <AssetUploadCard
           projectId={projectId}
@@ -58,6 +63,7 @@ export function ProjectAssetUploader({
           assetType="video"
           accept="video/mp4,video/webm,video/quicktime"
           currentUrl={videoUrl}
+          blobUploadsEnabled={blobUploadsEnabled}
         />
       </div>
     </section>
@@ -70,6 +76,7 @@ type AssetUploadCardProps = {
   assetType: "image" | "video";
   accept: string;
   currentUrl?: string | null;
+  blobUploadsEnabled: boolean;
 };
 
 function AssetUploadCard({
@@ -78,12 +85,14 @@ function AssetUploadCard({
   assetType,
   accept,
   currentUrl,
+  blobUploadsEnabled,
 }: AssetUploadCardProps) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState<ProjectAssetUploadState | null>(
     null,
   );
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
   const isImage = assetType === "image";
   const label = isImage ? "Image a uploader" : "Video a uploader";
@@ -163,6 +172,8 @@ function AssetUploadCard({
               >
                 {feedback.message}
               </p>
+            ) : uploadProgress !== null ? (
+              <p className="text-cyan-200">Upload en cours {uploadProgress}%</p>
             ) : null}
           </div>
           <Button
@@ -176,18 +187,46 @@ function AssetUploadCard({
                   return;
                 }
 
-                const formData = new FormData();
-                formData.set("projectId", projectId);
-                formData.set("projectTitle", projectTitle);
-                formData.set("assetType", assetType);
-                formData.set("file", file);
+                setFeedback(null);
+                setUploadProgress(blobUploadsEnabled ? 0 : null);
 
-                const result = await uploadProjectAssetAction(formData);
-                setFeedback(result);
+                try {
+                  const result = blobUploadsEnabled
+                    ? await finalizeProjectAssetUploadAction({
+                        projectId,
+                        projectTitle,
+                        assetType,
+                        blob: await uploadFileToBlob(assetType, file, (event) => {
+                          setUploadProgress(Math.round(event.percentage));
+                        }),
+                      })
+                    : await (async () => {
+                        const formData = new FormData();
+                        formData.set("projectId", projectId);
+                        formData.set("projectTitle", projectTitle);
+                        formData.set("assetType", assetType);
+                        formData.set("file", file);
+                        return uploadProjectAssetAction(formData);
+                      })();
 
-                if (result.status === "success") {
-                  setFile(null);
-                  router.refresh();
+                  setFeedback(result);
+
+                  if (result.status === "success") {
+                    setFile(null);
+                    router.refresh();
+                  }
+                } catch (error) {
+                  setFeedback({
+                    status: "error",
+                    message: getUploadErrorMessage(
+                      error,
+                      isImage
+                        ? "Impossible de televerser l image pour le moment."
+                        : "Impossible de televerser la video pour le moment.",
+                    ),
+                  });
+                } finally {
+                  setUploadProgress(null);
                 }
               });
             }}

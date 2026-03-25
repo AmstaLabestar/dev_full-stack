@@ -4,22 +4,29 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import {
+  finalizeProfileImageUploadAction,
   uploadProfileImageAction,
   type ProfileImageUploadActionState,
 } from "@/app/admin/profile/actions";
 import { adminFieldClassName } from "@/components/admin/field-styles";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { uploadFileToBlob, getUploadErrorMessage } from "@/lib/blob-client-upload";
 import { cn } from "@/lib/utils";
 
 type ProfileImageUploadCardProps = {
   profileId: string;
+  blobUploadsEnabled: boolean;
 };
 
-export function ProfileImageUploadCard({ profileId }: ProfileImageUploadCardProps) {
+export function ProfileImageUploadCard({
+  profileId,
+  blobUploadsEnabled,
+}: ProfileImageUploadCardProps) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState<ProfileImageUploadActionState | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -58,6 +65,8 @@ export function ProfileImageUploadCard({ profileId }: ProfileImageUploadCardProp
               >
                 {feedback.message}
               </p>
+            ) : uploadProgress !== null ? (
+              <p className="text-cyan-200">Upload en cours {uploadProgress}%</p>
             ) : null}
           </div>
           <Button
@@ -70,16 +79,40 @@ export function ProfileImageUploadCard({ profileId }: ProfileImageUploadCardProp
                   return;
                 }
 
-                const formData = new FormData();
-                formData.set("profileId", profileId);
-                formData.set("file", file);
+                setFeedback(null);
+                setUploadProgress(blobUploadsEnabled ? 0 : null);
 
-                const result = await uploadProfileImageAction(formData);
-                setFeedback(result);
+                try {
+                  const result = blobUploadsEnabled
+                    ? await finalizeProfileImageUploadAction({
+                        profileId,
+                        blob: await uploadFileToBlob("image", file, (event) => {
+                          setUploadProgress(Math.round(event.percentage));
+                        }),
+                      })
+                    : await (async () => {
+                        const formData = new FormData();
+                        formData.set("profileId", profileId);
+                        formData.set("file", file);
+                        return uploadProfileImageAction(formData);
+                      })();
 
-                if (result.status === "success") {
-                  setFile(null);
-                  router.refresh();
+                  setFeedback(result);
+
+                  if (result.status === "success") {
+                    setFile(null);
+                    router.refresh();
+                  }
+                } catch (error) {
+                  setFeedback({
+                    status: "error",
+                    message: getUploadErrorMessage(
+                      error,
+                      "Impossible de televerser la photo pour le moment.",
+                    ),
+                  });
+                } finally {
+                  setUploadProgress(null);
                 }
               });
             }}

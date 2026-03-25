@@ -191,11 +191,16 @@ export function ProjectFormCard({ mode, initialValues }: ProjectFormCardProps) {
               label="Lien projet"
               error={form.formState.errors.demoUrl?.message}
             >
-              <input
-                className={adminFieldClassName()}
-                placeholder="Expo, APK, store ou page projet"
-                {...form.register("demoUrl")}
-              />
+              <div className="grid gap-2">
+                <input
+                  className={adminFieldClassName()}
+                  placeholder="Expo, APK, store ou page projet"
+                  {...form.register("demoUrl")}
+                />
+                <p className="text-xs leading-5 text-slate-400">
+                  Pour un projet mobile, la carte publique affiche en priorite Code et Video. Le lien projet reste utile pour Expo, APK, store ou page de presentation.
+                </p>
+              </div>
             </Field>
           </div>
 

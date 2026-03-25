@@ -1,22 +1,29 @@
-"use client";
+﻿"use client";
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import {
+  finalizeCvUploadAction,
   uploadCvAction,
   type CvUploadActionState,
 } from "@/app/admin/cv/actions";
 import { adminFieldClassName } from "@/components/admin/field-styles";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { uploadFileToBlob, getUploadErrorMessage } from "@/lib/blob-client-upload";
 import { cn } from "@/lib/utils";
 
-export function CvUploadCard() {
+type CvUploadCardProps = {
+  blobUploadsEnabled: boolean;
+};
+
+export function CvUploadCard({ blobUploadsEnabled }: CvUploadCardProps) {
   const router = useRouter();
   const [title, setTitle] = useState("CV principal");
   const [file, setFile] = useState<File | null>(null);
   const [feedback, setFeedback] = useState<CvUploadActionState | null>(null);
+  const [uploadProgress, setUploadProgress] = useState<number | null>(null);
   const [isPending, startTransition] = useTransition();
 
   return (
@@ -65,6 +72,8 @@ export function CvUploadCard() {
               >
                 {feedback.message}
               </p>
+            ) : uploadProgress !== null ? (
+              <p className="text-cyan-200">Upload en cours {uploadProgress}%</p>
             ) : null}
           </div>
           <Button
@@ -77,16 +86,40 @@ export function CvUploadCard() {
                   return;
                 }
 
-                const formData = new FormData();
-                formData.set("title", title);
-                formData.set("file", file);
+                setFeedback(null);
+                setUploadProgress(blobUploadsEnabled ? 0 : null);
 
-                const result = await uploadCvAction(formData);
-                setFeedback(result);
+                try {
+                  const result = blobUploadsEnabled
+                    ? await finalizeCvUploadAction({
+                        title,
+                        blob: await uploadFileToBlob("cv", file, (event) => {
+                          setUploadProgress(Math.round(event.percentage));
+                        }),
+                      })
+                    : await (async () => {
+                        const formData = new FormData();
+                        formData.set("title", title);
+                        formData.set("file", file);
+                        return uploadCvAction(formData);
+                      })();
 
-                if (result.status === "success") {
-                  setFile(null);
-                  router.refresh();
+                  setFeedback(result);
+
+                  if (result.status === "success") {
+                    setFile(null);
+                    router.refresh();
+                  }
+                } catch (error) {
+                  setFeedback({
+                    status: "error",
+                    message: getUploadErrorMessage(
+                      error,
+                      "Impossible de televerser le CV pour le moment.",
+                    ),
+                  });
+                } finally {
+                  setUploadProgress(null);
                 }
               });
             }}

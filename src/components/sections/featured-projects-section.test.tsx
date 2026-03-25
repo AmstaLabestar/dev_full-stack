@@ -75,4 +75,39 @@ describe("FeaturedProjectsSection", () => {
       "https://video.example.com/tailorpro",
     );
   });
+
+  it("prioritizes video over project link for mobile projects", () => {
+    render(
+      <FeaturedProjectsSection
+        projects={[
+          {
+            slug: "tailorpro-mobile",
+            title: "TailorPro Mobile",
+            summary: "Application mobile metier concue pour un usage terrain.",
+            category: "mobile",
+            year: 2025,
+            featured: true,
+            tags: ["Expo", "React Native"],
+            metrics: ["Usage mobile", "Video produit"],
+            imageUrl: "/uploads/images/tailorpro-mobile.jpg",
+            links: {
+              github: "https://github.com/hamza/tailorpro-mobile",
+              demo: "https://expo.dev/projects/tailorpro-mobile",
+              video: "https://video.example.com/tailorpro-mobile",
+            },
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: /code/i })).toHaveAttribute(
+      "href",
+      "https://github.com/hamza/tailorpro-mobile",
+    );
+    expect(screen.getByRole("link", { name: /video/i })).toHaveAttribute(
+      "href",
+      "https://video.example.com/tailorpro-mobile",
+    );
+    expect(screen.queryByRole("link", { name: /projet/i })).not.toBeInTheDocument();
+  });
 });
