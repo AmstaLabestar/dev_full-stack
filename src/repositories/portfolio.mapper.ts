@@ -1,10 +1,10 @@
-﻿import type {
+import type {
   Experience,
   Highlight,
   PortfolioProfile,
   Project,
   SocialLink,
-} from "@/generated/prisma/client";
+} from "@prisma/client";
 import { portfolioContent } from "@/data/portfolio";
 import { portfolioSchema } from "@/schemas/portfolio";
 import type { Portfolio } from "@/types/portfolio";

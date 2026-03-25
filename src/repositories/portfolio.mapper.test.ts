@@ -4,7 +4,7 @@ import type {
   PortfolioProfile,
   Project,
   SocialLink,
-} from "@/generated/prisma/client";
+} from "@prisma/client";
 import { describe, expect, it } from "vitest";
 import { mapPortfolioSnapshotToDomain } from "@/repositories/portfolio.mapper";
 

@@ -1,6 +1,6 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
-import { AssetType } from "@/generated/prisma/client";
+import { AssetType } from "@prisma/client";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { CvUploadCard } from "@/components/admin/cv-upload-card";
 import { Badge } from "@/components/ui/badge";

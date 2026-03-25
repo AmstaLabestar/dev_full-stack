@@ -1,4 +1,4 @@
-﻿import { AssetType, type Asset } from "@/generated/prisma/client";
+import { AssetType, type Asset } from "@prisma/client";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
 import type { ProjectMutationInput } from "@/schemas/admin-project";
 import type {

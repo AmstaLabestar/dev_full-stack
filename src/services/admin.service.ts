@@ -1,4 +1,4 @@
-﻿import { AssetType } from "@/generated/prisma/client";
+import { AssetType } from "@prisma/client";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import { PrismaAdminRepository } from "@/repositories/admin.prisma-repository";
 import type {

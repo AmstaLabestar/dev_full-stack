@@ -1,4 +1,4 @@
-﻿import type { Asset, AssetType, Experience, Project } from "@/generated/prisma/client";
+import type { Asset, AssetType, Experience, Project } from "@prisma/client";
 
 export type AdminOverview = {
   projectCount: number;

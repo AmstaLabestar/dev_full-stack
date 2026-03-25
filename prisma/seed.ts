@@ -1,6 +1,6 @@
-﻿import "dotenv/config";
+import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { portfolioEditorialSeed } from "@/data/portfolio-editorial-seed";
 import { portfolioContent } from "@/data/portfolio";
 import { hashPassword } from "@/lib/password";

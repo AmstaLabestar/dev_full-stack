@@ -1,7 +1,7 @@
-﻿"use server";
+"use server";
 
 import { revalidatePath } from "next/cache";
-import { AssetType } from "@/generated/prisma/client";
+import { AssetType } from "@prisma/client";
 import { storeUploadedFile } from "@/lib/file-storage";
 import { getUploadFileName } from "@/lib/upload-path";
 import { requireAdminSession } from "@/lib/auth-guard";
