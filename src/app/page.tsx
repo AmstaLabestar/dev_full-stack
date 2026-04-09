@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 
 import { AdminShortcut } from "@/components/admin-shortcut";
 import { PublicFooter } from "@/components/public-footer";
@@ -15,7 +15,6 @@ import { Container } from "@/components/ui/container";
 import { Reveal } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { siteConfig } from "@/lib/site-config";
-import { buildPersonJsonLd, buildWebsiteJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { portfolioService } from "@/services/portfolio.service";
 
@@ -44,18 +43,9 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const landingPageData = await portfolioService.getLandingPageData();
-  const structuredData = [buildPersonJsonLd(), buildWebsiteJsonLd()];
-  const structuredDataJson = JSON.stringify(structuredData).replace(/</g, "\\u003c");
 
   return (
     <>
-      <script
-        id="portfolio-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: structuredDataJson,
-        }}
-      />
       <AdminShortcut />
       <main className="min-h-screen bg-transparent text-slate-900 dark:text-slate-50">
         <HeroSection
