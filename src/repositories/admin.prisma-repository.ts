@@ -1,4 +1,5 @@
-import { AssetType } from "@prisma/client";
+﻿import { AssetType } from "@prisma/client";
+import { deleteStoredAssets } from "@/lib/asset-storage";
 import { prisma } from "@/lib/prisma";
 import type { AdminRepository } from "@/repositories/admin.repository";
 import type { ExperienceMutationInput } from "@/schemas/admin-experience";
@@ -65,17 +66,29 @@ export class PrismaAdminRepository implements AdminRepository {
   }
 
   async replaceCurrentProfileImage(profileId: string, input: AssetMutationInput) {
-    return prisma.$transaction(async (transaction) => {
-      await transaction.asset.updateMany({
-        where: {
-          type: AssetType.image,
-          projectId: null,
-          isCurrent: true,
-        },
-        data: {
-          isCurrent: false,
-        },
-      });
+    const previousAssets = await prisma.asset.findMany({
+      where: {
+        type: AssetType.image,
+        projectId: null,
+        isCurrent: true,
+      },
+      select: {
+        id: true,
+        storageKey: true,
+        url: true,
+      },
+    });
+
+    const result = await prisma.$transaction(async (transaction) => {
+      if (previousAssets.length > 0) {
+        await transaction.asset.deleteMany({
+          where: {
+            id: {
+              in: previousAssets.map((asset) => asset.id),
+            },
+          },
+        });
+      }
 
       const asset = await transaction.asset.create({
         data: {
@@ -94,13 +107,18 @@ export class PrismaAdminRepository implements AdminRepository {
       }
 
       return {
-        id: profile.id,
-        name: profile.name,
-        role: profile.role,
-        profileImageUrl: asset.url,
-        updatedAt: asset.updatedAt,
+        profile: {
+          id: profile.id,
+          name: profile.name,
+          role: profile.role,
+          profileImageUrl: asset.url,
+          updatedAt: asset.updatedAt,
+        },
       };
     });
+
+    await deleteStoredAssets(previousAssets);
+    return result.profile;
   }
 
   async listProjects() {
@@ -127,7 +145,30 @@ export class PrismaAdminRepository implements AdminRepository {
   }
 
   async deleteProject(id: string) {
-    await prisma.project.delete({ where: { id } });
+    const projectAssets = await prisma.asset.findMany({
+      where: { projectId: id },
+      select: {
+        id: true,
+        storageKey: true,
+        url: true,
+      },
+    });
+
+    await prisma.$transaction(async (transaction) => {
+      if (projectAssets.length > 0) {
+        await transaction.asset.deleteMany({
+          where: {
+            id: {
+              in: projectAssets.map((asset) => asset.id),
+            },
+          },
+        });
+      }
+
+      await transaction.project.delete({ where: { id } });
+    });
+
+    await deleteStoredAssets(projectAssets);
   }
 
   async listExperiences() {
@@ -173,16 +214,27 @@ export class PrismaAdminRepository implements AdminRepository {
   }
 
   async replaceCurrentCv(input: AssetMutationInput) {
-    return prisma.$transaction(async (transaction) => {
-      await transaction.asset.updateMany({
-        where: {
-          type: AssetType.cv,
-          isCurrent: true,
-        },
-        data: {
-          isCurrent: false,
-        },
-      });
+    const previousAssets = await prisma.asset.findMany({
+      where: {
+        type: AssetType.cv,
+      },
+      select: {
+        id: true,
+        storageKey: true,
+        url: true,
+      },
+    });
+
+    const result = await prisma.$transaction(async (transaction) => {
+      if (previousAssets.length > 0) {
+        await transaction.asset.deleteMany({
+          where: {
+            id: {
+              in: previousAssets.map((asset) => asset.id),
+            },
+          },
+        });
+      }
 
       return transaction.asset.create({
         data: {
@@ -192,6 +244,9 @@ export class PrismaAdminRepository implements AdminRepository {
         },
       });
     });
+
+    await deleteStoredAssets(previousAssets);
+    return result;
   }
 
   async attachProjectAsset(
@@ -200,18 +255,29 @@ export class PrismaAdminRepository implements AdminRepository {
     input: AssetMutationInput,
   ) {
     const assetType = type === "image" ? AssetType.image : AssetType.video;
+    const previousAssets = await prisma.asset.findMany({
+      where: {
+        projectId,
+        type: assetType,
+        isCurrent: true,
+      },
+      select: {
+        id: true,
+        storageKey: true,
+        url: true,
+      },
+    });
 
-    return prisma.$transaction(async (transaction) => {
-      await transaction.asset.updateMany({
-        where: {
-          projectId,
-          type: assetType,
-          isCurrent: true,
-        },
-        data: {
-          isCurrent: false,
-        },
-      });
+    const result = await prisma.$transaction(async (transaction) => {
+      if (previousAssets.length > 0) {
+        await transaction.asset.deleteMany({
+          where: {
+            id: {
+              in: previousAssets.map((asset) => asset.id),
+            },
+          },
+        });
+      }
 
       const asset = await transaction.asset.create({
         data: {
@@ -230,5 +296,9 @@ export class PrismaAdminRepository implements AdminRepository {
 
       return asset;
     });
+
+    await deleteStoredAssets(previousAssets);
+    return result;
   }
 }
+
