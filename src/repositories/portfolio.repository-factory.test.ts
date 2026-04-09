@@ -49,4 +49,15 @@ describe("createPortfolioRepository", () => {
       /DATABASE_URL must be configured/i,
     );
   });
+
+  it("uses the in-memory repository during the Next.js production build phase", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PHASE", "phase-production-build");
+    vi.stubEnv("DATABASE_URL", "");
+
+    const { createPortfolioRepository } = await loadFactory();
+    const repository = createPortfolioRepository();
+
+    expect(repository.constructor.name).toBe("InMemoryPortfolioRepository");
+  });
 });
