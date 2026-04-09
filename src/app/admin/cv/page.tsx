@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import { AssetType } from "@prisma/client";
 import { AdminShell } from "@/components/admin/admin-shell";
@@ -22,7 +22,7 @@ export default async function AdminCvPage() {
   return (
     <AdminShell
       title="Module CV"
-      description="Televerse, active et historise les versions du CV depuis le back-office."
+      description="Televerse et remplace la version active du CV depuis le back-office."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
@@ -62,13 +62,13 @@ export default async function AdminCvPage() {
       <Card className="bg-white/6">
         <CardContent className="space-y-5 p-6">
           <div className="space-y-2">
-            <Badge variant="secondary">Historique</Badge>
+            <Badge variant="secondary">Retention</Badge>
             <h2 className="font-display text-2xl font-semibold text-white">
-              Versions televersees
+              Une seule version conservee
             </h2>
             <p className="text-sm leading-6 text-slate-400">
-              Les anciennes versions restent tracees en base. Une seule est
-              marquee comme active.
+              Chaque nouveau CV remplace entierement le precedent pour eviter les
+              fichiers orphelins et garder un stockage propre en production.
             </p>
           </div>
 
@@ -80,9 +80,7 @@ export default async function AdminCvPage() {
               >
                 <div className="space-y-1">
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant={asset.isCurrent ? "accent" : "secondary"}>
-                      {asset.isCurrent ? "Actif" : "Archive"}
-                    </Badge>
+                    <Badge variant="accent">Actif</Badge>
                     <Badge>{asset.fileName}</Badge>
                   </div>
                   <p className="text-sm text-slate-300">{asset.title}</p>
@@ -102,7 +100,7 @@ export default async function AdminCvPage() {
             ))}
             {cvAssets.length === 0 ? (
               <p className="text-sm text-slate-500">
-                Aucun CV historise pour le moment.
+                Aucun CV actif pour le moment.
               </p>
             ) : null}
           </div>
