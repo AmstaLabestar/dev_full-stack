@@ -1,54 +1,49 @@
-﻿import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { createPortfolioRepository } from "@/repositories/portfolio.repository-factory";
-import { InMemoryPortfolioRepository } from "@/repositories/portfolio.repository";
-import { PrismaPortfolioRepository } from "@/repositories/portfolio.prisma-repository";
+﻿import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const originalDatabaseUrl = process.env.DATABASE_URL;
-const originalNodeEnv = process.env.NODE_ENV;
+const PLACEHOLDER_DATABASE_URL =
+  "postgresql://portfolio:portfolio@localhost:5432/hamzadev?schema=public";
+const REAL_DATABASE_URL =
+  "postgresql://user:password@db.example.com:5432/portfolio?schema=public";
 
-function setNodeEnv(value: string | undefined) {
-  Object.defineProperty(process.env, "NODE_ENV", {
-    value,
-    configurable: true,
-    writable: true,
-    enumerable: true,
-  });
+async function loadFactory() {
+  vi.resetModules();
+  return import("@/repositories/portfolio.repository-factory");
 }
 
 describe("createPortfolioRepository", () => {
   beforeEach(() => {
-    process.env.DATABASE_URL = originalDatabaseUrl;
-    setNodeEnv(originalNodeEnv);
+    vi.unstubAllEnvs();
   });
 
-  afterAll(() => {
-    process.env.DATABASE_URL = originalDatabaseUrl;
-    setNodeEnv(originalNodeEnv);
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
-  it("returns in-memory repository for the default local placeholder url in development", () => {
-    setNodeEnv("development");
-    process.env.DATABASE_URL =
-      "postgresql://portfolio:portfolio@localhost:5432/hamzadev?schema=public";
+  it("returns in-memory repository for the default local placeholder url in development", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("DATABASE_URL", PLACEHOLDER_DATABASE_URL);
 
+    const { createPortfolioRepository } = await loadFactory();
     const repository = createPortfolioRepository();
 
-    expect(repository).toBeInstanceOf(InMemoryPortfolioRepository);
+    expect(repository.constructor.name).toBe("InMemoryPortfolioRepository");
   });
 
-  it("returns Prisma repository when a real database url is configured", () => {
-    setNodeEnv("development");
-    process.env.DATABASE_URL =
-      "postgresql://user:password@db.example.com:5432/portfolio?schema=public";
+  it("returns Prisma repository when a real database url is configured", async () => {
+    vi.stubEnv("NODE_ENV", "development");
+    vi.stubEnv("DATABASE_URL", REAL_DATABASE_URL);
 
+    const { createPortfolioRepository } = await loadFactory();
     const repository = createPortfolioRepository();
 
-    expect(repository).toBeInstanceOf(PrismaPortfolioRepository);
+    expect(repository.constructor.name).toBe("PrismaPortfolioRepository");
   });
 
-  it("throws in production when the database url is missing", () => {
-    setNodeEnv("production");
-    delete process.env.DATABASE_URL;
+  it("throws in production when the database url is missing", async () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("DATABASE_URL", "");
+
+    const { createPortfolioRepository } = await loadFactory();
 
     expect(() => createPortfolioRepository()).toThrow(
       /DATABASE_URL must be configured/i,
