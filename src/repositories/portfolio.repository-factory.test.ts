@@ -43,9 +43,7 @@ describe("createPortfolioRepository", () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("DATABASE_URL", "");
 
-    const { createPortfolioRepository } = await loadFactory();
-
-    expect(() => createPortfolioRepository()).toThrow(
+    await expect(loadFactory()).rejects.toThrow(
       /DATABASE_URL must be configured/i,
     );
   });
