@@ -17,11 +17,13 @@ import { cn } from "@/lib/utils";
 type ProfileImageUploadCardProps = {
   profileId: string;
   blobUploadsEnabled: boolean;
+  uploadsEnabled: boolean;
 };
 
 export function ProfileImageUploadCard({
   profileId,
   blobUploadsEnabled,
+  uploadsEnabled,
 }: ProfileImageUploadCardProps) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -39,6 +41,11 @@ export function ProfileImageUploadCard({
           <p className="text-sm leading-6 text-slate-400">
             PNG, JPG, WEBP ou SVG. 4 Mo maximum. La nouvelle image sera affichee dans le hero public.
           </p>
+          {!uploadsEnabled ? (
+            <p className="text-sm leading-6 text-amber-200">
+              Upload indisponible tant que Vercel Blob n&apos;est pas configure pour la production.
+            </p>
+          ) : null}
         </div>
 
         <label className="grid gap-2 text-sm font-medium text-slate-200">
@@ -72,7 +79,7 @@ export function ProfileImageUploadCard({
           <Button
             type="button"
             size="lg"
-            disabled={isPending || !file}
+            disabled={isPending || !file || !uploadsEnabled}
             onClick={() => {
               startTransition(async () => {
                 if (!file) {

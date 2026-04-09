@@ -8,6 +8,10 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { isBlobStorageEnabled } from "@/lib/blob-storage";
+import {
+  areProductionUploadsEnabled,
+  getUploadsDisabledMessage,
+} from "@/lib/upload-runtime";
 import { cn } from "@/lib/utils";
 import { adminService } from "@/services/admin.service";
 
@@ -18,6 +22,7 @@ export default async function AdminCvPage() {
     adminService.listAssetsByType(AssetType.cv),
   ]);
   const blobUploadsEnabled = isBlobStorageEnabled();
+  const uploadsEnabled = areProductionUploadsEnabled();
 
   return (
     <AdminShell
@@ -25,8 +30,16 @@ export default async function AdminCvPage() {
       description="Televerse et remplace la version active du CV depuis le back-office."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
+      {!uploadsEnabled ? (
+        <div className="mb-6 rounded-3xl border border-amber-300/20 bg-amber-400/10 px-5 py-4 text-sm leading-6 text-amber-100/90">
+          {getUploadsDisabledMessage()}
+        </div>
+      ) : null}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
-        <CvUploadCard blobUploadsEnabled={blobUploadsEnabled} />
+        <CvUploadCard
+          blobUploadsEnabled={blobUploadsEnabled}
+          uploadsEnabled={uploadsEnabled}
+        />
 
         <Card className="bg-white/6">
           <CardContent className="space-y-5 p-6">

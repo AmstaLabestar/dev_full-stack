@@ -7,12 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { isBlobStorageEnabled } from "@/lib/blob-storage";
+import {
+  areProductionUploadsEnabled,
+  getUploadsDisabledMessage,
+} from "@/lib/upload-runtime";
 import { adminService } from "@/services/admin.service";
 
 export default async function AdminProjectsPage() {
   const session = await requireAdminSession();
   const projects = await adminService.listProjects();
   const blobUploadsEnabled = isBlobStorageEnabled();
+  const uploadsEnabled = areProductionUploadsEnabled();
 
   return (
     <AdminShell
@@ -24,6 +29,11 @@ export default async function AdminProjectsPage() {
         La landing affiche jusqu a 3 projets mis en avant. L ordre le plus faible
         passe en premier. Tous les projets restent consultables sur /projects.
       </div>
+      {!uploadsEnabled ? (
+        <div className="mb-6 rounded-3xl border border-amber-300/20 bg-amber-400/10 px-5 py-4 text-sm leading-6 text-amber-100/90">
+          {getUploadsDisabledMessage()}
+        </div>
+      ) : null}
       <div className="grid gap-6 xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <ProjectFormCard mode="create" />
 
@@ -62,6 +72,7 @@ export default async function AdminProjectsPage() {
                   imageUrl={project.imageUrl}
                   videoUrl={project.videoUrl}
                   blobUploadsEnabled={blobUploadsEnabled}
+                  uploadsEnabled={uploadsEnabled}
                 />
 
                 <ProjectFormCard mode="edit" initialValues={project} />

@@ -6,12 +6,17 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { isBlobStorageEnabled } from "@/lib/blob-storage";
+import {
+  areProductionUploadsEnabled,
+  getUploadsDisabledMessage,
+} from "@/lib/upload-runtime";
 import { adminService } from "@/services/admin.service";
 
 export default async function AdminProfilePage() {
   const session = await requireAdminSession();
   const profile = await adminService.getProfile();
   const blobUploadsEnabled = isBlobStorageEnabled();
+  const uploadsEnabled = areProductionUploadsEnabled();
 
   if (!profile) {
     throw new Error("Portfolio profile not found.");
@@ -23,10 +28,16 @@ export default async function AdminProfilePage() {
       description="Gere l'image de profil affichee sur la landing page publique."
       sessionLabel={session.user.email ?? "Administrateur"}
     >
+      {!uploadsEnabled ? (
+        <div className="mb-6 rounded-3xl border border-amber-300/20 bg-amber-400/10 px-5 py-4 text-sm leading-6 text-amber-100/90">
+          {getUploadsDisabledMessage()}
+        </div>
+      ) : null}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(340px,0.9fr)]">
         <ProfileImageUploadCard
           profileId={profile.id}
           blobUploadsEnabled={blobUploadsEnabled}
+          uploadsEnabled={uploadsEnabled}
         />
 
         <Card className="bg-white/6">

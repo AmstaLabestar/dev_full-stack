@@ -69,8 +69,8 @@ npm run prisma:studio
 - navigation dediee vers les modules metier
 - CRUD projets avec React Hook Form + Zod + server actions
 - CRUD experiences avec React Hook Form + Zod + server actions
-- upload de CV PDF avec activation automatique de la version courante, en local ou via Vercel Blob
-- upload image et video pour les projets avec fallback local et stockage durable via Vercel Blob en production
+- upload de CV PDF avec activation automatique de la version courante
+- upload image et video pour les projets avec stockage durable via Vercel Blob en production
 - historique des assets CV en base Prisma
 
 ## SEO et perf
@@ -117,6 +117,13 @@ npm run prisma:studio
 5. Ajouter `BLOB_READ_WRITE_TOKEN` pour activer les uploads directs vers Vercel Blob.
 6. Verifier le login admin, les uploads CV/image/video et les routes SEO apres le premier deploy.
 
+## Regles de production
+
+- `BLOB_READ_WRITE_TOKEN` est requis pour autoriser les uploads admin en production
+- sans token Blob, les uploads sont volontairement desactives en production
+- les pages publiques peuvent utiliser le seed de fallback uniquement pendant `next build` si `DATABASE_URL` manque, afin de laisser la CI compiler
+- au runtime production, une vraie `DATABASE_URL` reste obligatoire
+
 ## Stockage fichiers
 
 - `public/uploads/cv` : CV PDF
@@ -124,7 +131,7 @@ npm run prisma:studio
 - `public/uploads/videos` : videos projet
 - validation MIME et taille avant persistance
 - metadonnees d asset en base via Prisma
-- point d attention : sur Vercel, le stockage disque local est ephemere. Pour la production, il faudra remplacer ce stockage par Vercel Blob, S3 ou un stockage externe equivalent.
+- point d attention : sur Vercel, le stockage disque local est ephemere. En production, les uploads doivent passer par Vercel Blob.
 
 ## Structure actuelle
 

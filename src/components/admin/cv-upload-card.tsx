@@ -16,9 +16,13 @@ import { cn } from "@/lib/utils";
 
 type CvUploadCardProps = {
   blobUploadsEnabled: boolean;
+  uploadsEnabled: boolean;
 };
 
-export function CvUploadCard({ blobUploadsEnabled }: CvUploadCardProps) {
+export function CvUploadCard({
+  blobUploadsEnabled,
+  uploadsEnabled,
+}: CvUploadCardProps) {
   const router = useRouter();
   const [title, setTitle] = useState("CV principal");
   const [file, setFile] = useState<File | null>(null);
@@ -37,6 +41,11 @@ export function CvUploadCard({ blobUploadsEnabled }: CvUploadCardProps) {
             PDF uniquement, 5 Mo maximum. La nouvelle version deviendra
             automatiquement active.
           </p>
+          {!uploadsEnabled ? (
+            <p className="text-sm leading-6 text-amber-200">
+              Upload indisponible tant que Vercel Blob n&apos;est pas configure pour la production.
+            </p>
+          ) : null}
         </div>
 
         <label className="grid gap-2 text-sm font-medium text-slate-200">
@@ -79,7 +88,7 @@ export function CvUploadCard({ blobUploadsEnabled }: CvUploadCardProps) {
           <Button
             type="button"
             size="lg"
-            disabled={isPending || !file}
+            disabled={isPending || !file || !uploadsEnabled}
             onClick={() => {
               startTransition(async () => {
                 if (!file) {

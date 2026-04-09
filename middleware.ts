@@ -12,10 +12,6 @@ export async function middleware(request: NextRequest) {
     typeof token?.role === "string" ? token.role : undefined,
   );
 
-  if (isAdminSignInPath(pathname) && isAdmin) {
-    return NextResponse.redirect(new URL("/admin", request.url));
-  }
-
   if (!isAdminSignInPath(pathname) && !isAdmin) {
     return NextResponse.redirect(new URL("/admin/sign-in", request.url));
   }

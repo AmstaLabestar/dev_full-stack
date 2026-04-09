@@ -24,6 +24,7 @@ type ProjectAssetUploaderProps = {
   imageUrl?: string | null;
   videoUrl?: string | null;
   blobUploadsEnabled: boolean;
+  uploadsEnabled: boolean;
 };
 
 export function ProjectAssetUploader({
@@ -32,6 +33,7 @@ export function ProjectAssetUploader({
   imageUrl,
   videoUrl,
   blobUploadsEnabled,
+  uploadsEnabled,
 }: ProjectAssetUploaderProps) {
   return (
     <section className="space-y-4 rounded-3xl border border-white/10 bg-slate-950/30 p-5">
@@ -56,6 +58,7 @@ export function ProjectAssetUploader({
           accept="image/png,image/jpeg,image/webp,image/svg+xml"
           currentUrl={imageUrl}
           blobUploadsEnabled={blobUploadsEnabled}
+          uploadsEnabled={uploadsEnabled}
         />
         <AssetUploadCard
           projectId={projectId}
@@ -64,6 +67,7 @@ export function ProjectAssetUploader({
           accept="video/mp4,video/webm,video/quicktime"
           currentUrl={videoUrl}
           blobUploadsEnabled={blobUploadsEnabled}
+          uploadsEnabled={uploadsEnabled}
         />
       </div>
     </section>
@@ -77,6 +81,7 @@ type AssetUploadCardProps = {
   accept: string;
   currentUrl?: string | null;
   blobUploadsEnabled: boolean;
+  uploadsEnabled: boolean;
 };
 
 function AssetUploadCard({
@@ -86,6 +91,7 @@ function AssetUploadCard({
   accept,
   currentUrl,
   blobUploadsEnabled,
+  uploadsEnabled,
 }: AssetUploadCardProps) {
   const router = useRouter();
   const [file, setFile] = useState<File | null>(null);
@@ -111,6 +117,11 @@ function AssetUploadCard({
               ? "Formats acceptes : PNG, JPG, WEBP ou SVG. Taille maximale : 4 Mo."
               : "Formats acceptes : MP4, WEBM ou MOV. Taille maximale : 25 Mo."}
           </p>
+          {!uploadsEnabled ? (
+            <p className="text-sm leading-6 text-amber-200">
+              Upload indisponible tant que Vercel Blob n&apos;est pas configure pour la production.
+            </p>
+          ) : null}
         </div>
 
         {currentUrl ? (
@@ -180,7 +191,7 @@ function AssetUploadCard({
             type="button"
             variant="outline"
             size="lg"
-            disabled={isPending || !file}
+            disabled={isPending || !file || !uploadsEnabled}
             onClick={() => {
               startTransition(async () => {
                 if (!file) {

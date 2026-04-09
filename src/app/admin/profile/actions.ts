@@ -5,6 +5,7 @@ import { AssetType } from "@prisma/client";
 
 import { storeUploadedFile } from "@/lib/file-storage";
 import { getUploadFileName } from "@/lib/upload-path";
+import { assertUploadsEnabled } from "@/lib/upload-runtime";
 import { requireAdminSession } from "@/lib/auth-guard";
 import { uploadedBlobSchema, type UploadedBlobInput } from "@/schemas/blob-upload";
 import { validateUploadFile } from "@/schemas/upload";
@@ -19,6 +20,7 @@ export async function uploadProfileImageAction(
   formData: FormData,
 ): Promise<ProfileImageUploadActionState> {
   await requireAdminSession();
+  assertUploadsEnabled();
 
   const profileId = formData.get("profileId")?.toString();
   const fileValue = formData.get("file");
@@ -73,6 +75,7 @@ export async function finalizeProfileImageUploadAction(input: {
   blob: UploadedBlobInput;
 }): Promise<ProfileImageUploadActionState> {
   await requireAdminSession();
+  assertUploadsEnabled();
 
   const parsedBlob = uploadedBlobSchema.safeParse(input.blob);
 
